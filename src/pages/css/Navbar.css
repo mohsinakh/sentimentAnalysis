@@ -1,0 +1,74 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+  }
+
+
+  /* Header Styles */
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers content horizontally */
+    text-align: center; /* Centers text within each element */
+    padding: 5px;
+    background-color: #333; /* Optional: background color for header */
+  }
+  .header h1 {
+    font-size: 2.5rem; /* Adjust size as needed */
+    background: linear-gradient(45deg, #f5a623, #e68a00); /* Apply gradient to background */
+    background-clip: text;
+    -webkit-background-clip: text; /* Webkit property for compatibility */
+    -webkit-text-fill-color: transparent; /* Make text transparent to show gradient */
+    color: transparent; /* Ensures compatibility in some non-Webkit browsers */
+    margin-bottom: 5px;
+  }
+  
+  
+  
+  .header nav ul {
+    list-style: none;
+    padding: 5px 0;
+  }
+  
+  .header nav ul li {
+    display: inline;
+    margin: 0 15px;
+  }
+  
+  .header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s;
+  }
+  
+  .header nav ul li a:hover {
+    color: #f5a623;
+  }
+  
+
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+
+  
+    .header nav ul li {
+      display: block;
+      margin: 5px 0;
+    }
+  
+    .header h1, .services h2 {
+      font-size: 1.5rem;
+    }
+  
+    
+  }
+  
