@@ -1,74 +1,126 @@
-
+/* General Reset */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f7f6;
-    color: #333;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f7f6;
+  color: #333;
+}
 
-  /* Header Styles */
+/* Header Styles */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 15px 10px;
+  background-color: #333;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  background: linear-gradient(45deg, #f5a623, #e68a00);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  margin-bottom: 10px;
+  transition: transform 0.3s;
+}
+
+.header h1:hover {
+  transform: scale(1.05); /* Slight hover effect */
+}
+
+/* Navigation Styles */
+.header nav ul {
+  list-style: none;
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.header nav ul li {
+  display: inline-block;
+}
+
+.header nav ul li a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: color 0.3s, transform 0.2s;
+}
+
+.header nav ul li a:hover {
+  color: #f5a623;
+  transform: scale(1.1); /* Slight hover effect */
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
   .header {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Centers content horizontally */
-    text-align: center; /* Centers text within each element */
-    padding: 5px;
-    background-color: #333; /* Optional: background color for header */
+    padding: 10px;
   }
+
   .header h1 {
-    font-size: 2.5rem; /* Adjust size as needed */
-    background: linear-gradient(45deg, #f5a623, #e68a00); /* Apply gradient to background */
-    background-clip: text;
-    -webkit-background-clip: text; /* Webkit property for compatibility */
-    -webkit-text-fill-color: transparent; /* Make text transparent to show gradient */
-    color: transparent; /* Ensures compatibility in some non-Webkit browsers */
-    margin-bottom: 5px;
+    font-size: 2rem;
   }
-  
-  
-  
+
   .header nav ul {
-    list-style: none;
-    padding: 5px 0;
+    gap: 15px;
   }
-  
-  .header nav ul li {
-    display: inline;
-    margin: 0 15px;
-  }
-  
+
   .header nav ul li a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 1.1rem;
-    transition: color 0.3s;
+    font-size: 1rem;
   }
-  
-  .header nav ul li a:hover {
-    color: #f5a623;
+}
+
+@media (max-width: 768px) {
+  .header nav ul {
+    flex-direction: column;
+    gap: 10px;
   }
-  
 
-
-  /* Responsive Design */
-  @media (max-width: 768px) {
-
-  
-    .header nav ul li {
-      display: block;
-      margin: 5px 0;
-    }
-  
-    .header h1, .services h2 {
-      font-size: 1.5rem;
-    }
-  
-    
+  .header nav ul li {
+    display: block;
+    text-align: center;
   }
-  
+
+  .header h1 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 8px;
+  }
+
+  .header h1 {
+    font-size: 1.5rem;
+  }
+
+  .header nav ul {
+    gap: 8px;
+  }
+
+  .header nav ul li a {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .header h1 {
+    font-size: 1.3rem;
+  }
+
+  .header nav ul li a {
+    font-size: 0.85rem;
+  }
+}

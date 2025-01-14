@@ -8,6 +8,8 @@ import Footer from './pages/Footer';
 import RedditAnalysis from './pages/RedditAnalysis';
 import "./App.css";
 
+
+
 const App = () => {
   return (
     <div id="app-container">

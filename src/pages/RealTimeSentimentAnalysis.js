@@ -13,7 +13,7 @@ function RealTimeSentimentAnalysis() {
     setSentiment("");
 
     try {
-      const response = await fetch("http://localhost:8000/analyze-sentiment", {
+      const response = await fetch("https://sentiment-analysis-api-eight.vercel.app/analyze-sentiment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

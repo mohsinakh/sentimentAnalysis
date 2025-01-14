@@ -4,6 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faYoutube } from "@fortawesome/free-brands-svg-icons";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { Bar } from 'react-chartjs-2';
+import { Chart, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+
+// Register necessary components for your chart
+Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
 
 function YoutubeAnalysis() {
   const [url, setUrl] = useState("");
@@ -46,7 +51,7 @@ function YoutubeAnalysis() {
     setVideoId(id); // Set the video ID for preview
 
     try {
-      const response = await fetch("http://localhost:8000/fetch-comments", {
+      const response = await fetch("https://sentiment-analysis-api-eight.vercel.app/fetch-comments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
