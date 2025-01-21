@@ -1,13 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 import './css/RealTimeSentimentAnalysis.css';
+import { AuthContext } from '../context/AuthContext';
+import { useLocation } from 'react-router-dom';
 
 function RealTimeSentimentAnalysis() {
-  const [text, setText] = useState("");
+  const { token } = useContext(AuthContext);
+  const { state } = useLocation(); // Get the passed data from navigate
+  const analysisData = state?.analysisData; // This contains the text for sentiment analysis
+  const [text, setText] = useState(analysisData || ""); // Use the passed text or default to empty
   const [sentiment, setSentiment] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleAnalyze = async () => {
+  // Stable definition of handleAnalyze using useCallback
+  const handleAnalyze = useCallback(async () => {
+    if (!token) {
+      setError("You must be logged in to analyze sentiment.");
+      return;
+    }
+
     setLoading(true);
     setError("");
     setSentiment("");
@@ -17,6 +28,7 @@ function RealTimeSentimentAnalysis() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include the token in the Authorization header
         },
         body: JSON.stringify({ text }),
       });
@@ -32,7 +44,23 @@ function RealTimeSentimentAnalysis() {
     } finally {
       setLoading(false);
     }
+  }, [token, text]); // Dependencies: token and text
+
+  // Handle Enter key press to trigger the analysis
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevent the newline from being added
+      handleAnalyze();
+    }
   };
+
+  // UseEffect to re-trigger the analysis after navigation
+  useEffect(() => {
+    if (analysisData) {
+      setText(analysisData); // Update the text with passed data when available
+      handleAnalyze(); // Automatically analyze the sentiment after receiving the text
+    }
+  }, [analysisData, handleAnalyze]); // Dependencies: analysisData and handleAnalyze
 
   return (
     <div className="sentiment-page">
@@ -43,10 +71,15 @@ function RealTimeSentimentAnalysis() {
         <textarea
           placeholder="Type your text here..."
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={(e) => setText(e.target.value)} // Only updates the text state, no auto-analysis
+          onKeyDown={handleKeyPress} // Trigger analysis when Enter key is pressed
           className="sentiment-input"
         ></textarea>
-        <button onClick={handleAnalyze} className="analyze-button" disabled={loading}>
+        <button
+          onClick={handleAnalyze}
+          className="analyze-button"
+          disabled={loading || !text.trim()} // Disable the button if loading or text is empty
+        >
           {loading ? "Analyzing..." : "Analyze Sentiment"}
         </button>
       </div>
@@ -54,7 +87,9 @@ function RealTimeSentimentAnalysis() {
       {error && <p className="error">{error}</p>}
       {sentiment && (
         <div className="sentiment-result">
-          <p>Sentiment: <strong>{sentiment}</strong></p>
+          <p>
+            Sentiment: <strong>{sentiment}</strong>
+          </p>
         </div>
       )}
     </div>

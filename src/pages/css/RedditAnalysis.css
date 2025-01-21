@@ -1,4 +1,11 @@
 /* RedditAnalysis.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  
+}
+
 
 .reddit-analysis {
   padding: 40px 20px;
@@ -8,6 +15,7 @@
   max-width: 800px;
   margin: 50px auto;
   text-align: center;
+  overflow: hidden; /* Prevents content overflow on small devices */
 }
 
 .reddit-analysis h2 {
@@ -39,7 +47,7 @@
   outline: none;
 }
 
-.search-bar button {
+.search-bar btn {
   padding: 12px;
   border: none;
   background: linear-gradient(45deg, #ff4500, #e68a00);
@@ -50,7 +58,7 @@
   transition: background-color 0.3s;
 }
 
-.search-bar button:hover {
+.search-bar btn:hover {
   background-color: #e68a00;
 }
 
@@ -62,6 +70,35 @@
 .post-embed h3 {
   font-size: 1.5rem;
   color: #333;
+}
+
+.reddit-image {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+/* Add to RedditAnalysis.css */
+.view-post-link {
+  color: #ff4500; /* Reddit Orange */
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-decoration: none;
+  margin-top: 10px;
+  display: inline-block;
+  transition: color 0.3s, text-decoration 0.3s;
+}
+
+.view-post-link:hover {
+  color: #e68a00;
+  text-decoration: underline;
+}
+
+.view-post-link:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 69, 0, 0.8);
 }
 
 .sentiment-counts {
@@ -82,7 +119,7 @@
 
 .toggle-chart-btn {
   padding: 10px 20px;
-  background-color: #007bff;
+  background: linear-gradient(45deg, #ff4500, #e68a00);
   color: white;
   border: none;
   border-radius: 5px;
@@ -174,11 +211,14 @@
 @media (max-width: 768px) {
   .reddit-analysis {
     padding: 20px 10px;
+    margin: 10px auto; /* Centers the content */
   }
 
   .search-bar {
     flex-direction: column;
     gap: 10px;
+    width: 100%;
+    justify-content: center;
   }
 
   .search-bar input {
@@ -186,7 +226,7 @@
     font-size: 0.9rem;
   }
 
-  .search-bar button {
+  .search-bar btn {
     font-size: 0.9rem;
     padding: 10px;
   }
@@ -225,7 +265,7 @@
     font-size: 0.85rem;
   }
 
-  .search-bar button {
+  .search-bar btn {
     padding: 8px;
     font-size: 0.85rem;
   }
@@ -266,7 +306,7 @@
     padding: 8px;
   }
 
-  .search-bar button {
+  .search-bar .btn {
     padding: 6px;
     font-size: 0.75rem;
   }

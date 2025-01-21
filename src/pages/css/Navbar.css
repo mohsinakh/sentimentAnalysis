@@ -11,116 +11,151 @@ body {
   color: #333;
 }
 
-/* Header Styles */
+/* Header Styles (Desktop) */
 .header {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  text-align: center;
+  justify-content: space-between;
   padding: 15px 10px;
   background-color: #333;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.header h1 {
+.navbar-title {
   font-size: 2.5rem;
   background: linear-gradient(45deg, #f5a623, #e68a00);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: transparent;
-  margin-bottom: 10px;
+  margin: 0;
   transition: transform 0.3s;
 }
 
-.header h1:hover {
-  transform: scale(1.05); /* Slight hover effect */
+.navbar-title:hover {
+  transform: scale(1.05);
 }
 
 /* Navigation Styles */
-.header nav ul {
+.nav-links {
   list-style: none;
-  padding: 10px 0;
   display: flex;
-  justify-content: center;
   gap: 20px;
 }
 
-.header nav ul li {
+.nav-links li {
   display: inline-block;
 }
 
-.header nav ul li a {
+.nav-links li a {
   color: #fff;
   text-decoration: none;
   font-size: 1.1rem;
   transition: color 0.3s, transform 0.2s;
 }
 
-.header nav ul li a:hover {
+.nav-links li a:hover {
   color: #f5a623;
-  transform: scale(1.1); /* Slight hover effect */
+  transform: scale(1.1);
+}
+
+.nav-button {
+  display: none; /* Hidden by default on desktop */
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+.nav-button:focus {
+  outline: none;
+}
+
+/* Login/SignUp Button Styles */
+.nav-links .btn {
+  background: linear-gradient(45deg, #f5a623, #e68a00);
+  border: none;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.nav-links .btn:hover {
+  background: linear-gradient(45deg, #e68a00, #f5a623);
+  transform: scale(1.05);
+  color: #fff;
+}
+
+/* Bottom Navigation Bar (Mobile) */
+.bottom-nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #fff;
+  padding: 10px 0;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 15px 15px 0 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+/* Navigation Item Styling */
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #999;
+  text-decoration: none;
+  transition: color 0.3s, transform 0.3s;
+}
+
+.nav-item.active {
+  color: #f5a623;
+}
+
+.nav-item:hover {
+  transform: scale(1.1);
 }
 
 /* Responsive Design */
-@media (max-width: 1024px) {
-  .header {
-    padding: 10px;
-  }
-
-  .header h1 {
-    font-size: 2rem;
-  }
-
-  .header nav ul {
-    gap: 15px;
-  }
-
-  .header nav ul li a {
-    font-size: 1rem;
-  }
-}
-
 @media (max-width: 768px) {
-  .header nav ul {
-    flex-direction: column;
-    gap: 10px;
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
   }
 
-  .header nav ul li {
-    display: block;
-    text-align: center;
+  .nav-links {
+    display: none; /* Hide desktop navigation */
   }
 
-  .header h1 {
+  .nav-button {
+    display: block; /* Display toggle button */
+  }
+
+  .navbar-title {
     font-size: 1.8rem;
   }
-}
 
-@media (max-width: 480px) {
-  .header {
-    padding: 8px;
-  }
-
-  .header h1 {
-    font-size: 1.5rem;
-  }
-
-  .header nav ul {
-    gap: 8px;
-  }
-
-  .header nav ul li a {
-    font-size: 0.9rem;
+  .bottom-nav {
+    display: flex; /* Display bottom navigation */
   }
 }
 
-@media (max-width: 320px) {
-  .header h1 {
-    font-size: 1.3rem;
+@media (min-width: 769px) {
+  .bottom-nav {
+    display: none; /* Hide bottom navigation */
   }
 
-  .header nav ul li a {
-    font-size: 0.85rem;
+  .nav-button {
+    display: none; /* Hide toggle button */
   }
 }

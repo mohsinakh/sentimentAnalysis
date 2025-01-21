@@ -1,20 +1,22 @@
 /* General Styles */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f7f6;
-    color: #333;
-  }
-  
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+  color: #333;
+}
+
 .home-container {
   display: flex;
   flex-direction: column;
-  min-height: 78vh; 
+  min-height: 100%; 
+  background-color: #ffffff;
 }
 
 .content {
@@ -22,103 +24,100 @@
   padding: 20px; 
 }
 
-  
-  /* Services Section */
-  .services {
-    padding: 40px 20px;
-    background-color: #ffffff;
-  }
-  
-  .services h2 {
-    font-size: 2rem;
-    color: #333;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  .service-items {
-    display: flex;
-    justify-content: space-around;
-    gap: 20px;
-    flex-wrap: wrap;
-    padding: 20px;
-  }
-  
-  .service-link {
-    width: 30%;
-    text-decoration: none;
-    color: inherit; /* Keeps text color */
-  }
-  
-  .service-item {
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-    text-align: center;
-  }
-  
-  .service-item:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  }
-  
-  .service-icon {
-    font-size: 2rem;
-    margin-bottom: 15px;
-  }
-  
+/* Services Section */
+.services {
+  padding: 40px 20px;
+  background-color: #ffffff;
+}
 
+.services h2 {
+  font-size: 2rem; /* Use rem for scalability */
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
 
-  .service-item h3 {
-    font-size: 1.6rem;
-    color: #333;
-    margin-bottom: 10px;
-  }
-  
-  .service-item p {
-    font-size: 1rem;
-    color: #555;
-    margin-bottom: 15px;
-  }
-  
-  .learn-more-button {
-    background-color: #f5a623;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .learn-more-button:hover {
-    background-color: #e5941f;
-  }
-    
+.service-items {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 20px;
+}
 
+.service-link {
+  width: 30%;
+  text-decoration: none;
+  color: inherit; /* Keeps text color */
+}
 
-  
-  /* Contact Button */
-  .contact-button {
-    background-color: #f5a623;
-    display: block;
-    margin: 50px auto;
-    border: none;
-    padding: 12px 25px;
-    color: #fff;
-    font-size: 1.1rem;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-  }
-  
-  .contact-button:hover {
-    background-color: #e5941f;
-  }
-  
- 
+.service-item {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  text-align: center;
+}
+
+.service-item:hover {
+  transform: translateY(-10px); /* Slight hover effect */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.service-icon {
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+.service-item h3 {
+  font-size: 1.6rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.service-item p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 15px;
+  line-height: 1.6; /* Improve line spacing for readability */
+}
+
+.learn-more-button {
+  background-color: #f5a623;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s ease-in-out;
+}
+
+.learn-more-button:hover {
+  background-color: #e5941f;
+  transform: scale(1.05); /* Slightly enlarge buttons on hover */
+}
+
+/* Contact Button */
+.contact-button {
+  background-color: #f5a623;
+  display: block;
+  margin: 50px auto;
+  border: none;
+  padding: 12px 25px;
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.2s ease-in-out;
+}
+
+.contact-button:hover {
+  background-color: #e5941f;
+  transform: scale(1.05); /* Slightly enlarge button on hover */
+}
+
 /* Adjustments for Smaller Screens */
 @media screen and (max-width: 1024px) {
   .services h2 {
@@ -245,7 +244,7 @@
 
 .learn-more-button,
 .contact-button {
-  transition: background-color 0.3s, transform 0.2s;
+  transition: background-color 0.3s, transform 0.2s ease-in-out;
 }
 
 .learn-more-button:hover,
@@ -254,5 +253,5 @@
 }
 
 .service-item:hover {
-  transform: translateY(-5px); /* Slight hover effect */
+  transform: translateY(-10px); /* Slight hover effect */
 }

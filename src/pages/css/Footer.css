@@ -1,4 +1,12 @@
 /* General Styles for Footer */
+:root {
+  --footer-bg-color: #333;
+  --footer-text-color: #fff;
+  --footer-link-color: #f5a623;
+  --footer-link-hover-color: #fff;
+}
+
+
 html, body {
   height: 100%;
   margin: 0;
@@ -13,7 +21,7 @@ html, body {
 footer {
   background-color: #333;
   color: #fff;
-  padding: 20px;
+  padding: 5px;
   text-align: center;
   position: relative;
   width: 100%;
@@ -89,7 +97,7 @@ footer a:hover {
 
 @media screen and (max-width: 768px) {
   footer {
-    padding: 15px;
+    display: none;
   }
 
   .footer-container {

@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import "./css/YoutubeAnalysis.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faYoutube } from "@fortawesome/free-brands-svg-icons";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { Bar } from 'react-chartjs-2';
 import { Chart, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { AuthContext } from '../context/AuthContext';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 // Register necessary components for your chart
 Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
-
 
 function YoutubeAnalysis() {
   const [url, setUrl] = useState("");
@@ -19,45 +20,50 @@ function YoutubeAnalysis() {
   const [neutralCount, setNeutralCount] = useState(0);
   const [negativeCount, setNegativeCount] = useState(0);
   const [showChart, setShowChart] = useState(false); // State to toggle chart visibility
+  const [loading, setLoading] = useState(false);
+  const { token, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const extractVideoId = (url) => {
     const match = url.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
     return match ? match[1] : null;
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      fetchComments(); // Trigger search when Enter key is pressed
-    }
-  };
-
-  const handleFocus = () => {
-    document.getElementById("youtube-url").select(); // Select all text when input is focused
-  };
-
-  const fetchComments = async () => {
+  const fetchComments = useCallback(async (videoUrl) => {
+    setLoading(true);
     setError("");
     setComments([]);
     setPositiveCount(0);
     setNeutralCount(0);
     setNegativeCount(0);
 
-    const id = extractVideoId(url);
-    if (!id) {
-      setError("Invalid YouTube URL. Please try again.");
+    const videoId = extractVideoId(videoUrl);
+    setVideoId(videoId);
+
+    if (!token) {
+      setError("Please log in to continue.");
+      logout();
+      navigate("/login");
       return;
     }
-
-    setVideoId(id); // Set the video ID for preview
 
     try {
       const response = await fetch("https://sentiment-analysis-api-eight.vercel.app/fetch-comments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`, // Include the JWT token here
         },
-        body: JSON.stringify({ url }),
+        body: JSON.stringify({ url: videoUrl }),
       });
+
+      if (response.status === 401) {
+        setError("Session expired. Please log in again.");
+        logout();
+        navigate('/login');
+        return;
+      }
 
       if (!response.ok) {
         throw new Error("Failed to fetch comments");
@@ -80,9 +86,31 @@ function YoutubeAnalysis() {
       setPositiveCount(posCount);
       setNeutralCount(neuCount);
       setNegativeCount(negCount);
+      setLoading(false);
     } catch (error) {
       setError("Error fetching comments. Please check the URL and try again.");
+      setLoading(false);
     }
+  }, [token, logout, navigate]);
+
+  useEffect(() => {
+    const state = location.state;
+    if (state?.videoUrl) {
+      setUrl(state.videoUrl); // Automatically set the URL from the state
+      fetchComments(state.videoUrl); // Fetch comments immediately
+    }
+    // eslint-disable-next-line
+  }, [ location.state]); // Runs whenever the location state changes
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      fetchComments(url); // Trigger search when Enter key is pressed
+    }
+  };
+
+  const handleFocus = () => {
+    document.getElementById("youtube-url").select(); // Select all text when input is focused
   };
 
   // Chart Data
@@ -112,7 +140,7 @@ function YoutubeAnalysis() {
           onFocus={handleFocus}
           onChange={(e) => setUrl(e.target.value)}
         />
-        <button onClick={fetchComments}>
+        <button onClick={() => fetchComments(url)} className='btn'>
           <FontAwesomeIcon icon={faSearch} />
         </button>
       </div>
@@ -131,7 +159,8 @@ function YoutubeAnalysis() {
         </div>
       )}
 
-      {/* Sentiment Counts */}
+      {loading && <p>Loading comments...</p>}
+
       {comments.length > 0 && (
         <div className="sentiment-counts">
           <h3>Sentiment Breakdown</h3>
@@ -141,7 +170,6 @@ function YoutubeAnalysis() {
         </div>
       )}
 
-      {/* Show/Hide Chart Button */}
       {comments.length > 0 && (
         <button
           className="analyze-button"
@@ -151,14 +179,12 @@ function YoutubeAnalysis() {
         </button>
       )}
 
-      {/* Bar Chart for Sentiment Distribution */}
       {showChart && comments.length > 0 && (
         <div className="chart-container">
           <Bar data={data} />
         </div>
       )}
 
-      {/* Display Comments */}
       {comments.length > 0 && (
         <div className="comments">
           <h2>Comments</h2>
@@ -169,7 +195,7 @@ function YoutubeAnalysis() {
                   {comment.sentiment === "positive" && "😊"}
                   {comment.sentiment === "neutral" && "😐"}
                   {comment.sentiment === "negative" && "😠"}
-                  {` ${comment.user || "Anonymous"}`}
+                  {` ${comment.username || "Anonymous"}`}
                 </h4>
                 <div className={`sentiment-label ${comment.sentiment}`}>
                   {comment.sentiment === "positive" && "pos"}
@@ -187,4 +213,3 @@ function YoutubeAnalysis() {
 }
 
 export default YoutubeAnalysis;
-
