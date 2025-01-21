@@ -4,7 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import { useLocation } from 'react-router-dom';
 
 function RealTimeSentimentAnalysis() {
-  const { token } = useContext(AuthContext);
+  const { token,logout } = useContext(AuthContext);
   const { state } = useLocation(); // Get the passed data from navigate
   const analysisData = state?.analysisData; // This contains the text for sentiment analysis
   const [text, setText] = useState(analysisData || ""); // Use the passed text or default to empty
@@ -15,6 +15,7 @@ function RealTimeSentimentAnalysis() {
   // Stable definition of handleAnalyze using useCallback
   const handleAnalyze = useCallback(async () => {
     if (!token) {
+      logout();
       setError("You must be logged in to analyze sentiment.");
       return;
     }
@@ -33,6 +34,10 @@ function RealTimeSentimentAnalysis() {
         body: JSON.stringify({ text }),
       });
 
+      if(response.status === 401){
+        logout();
+      }
+
       if (!response.ok) {
         throw new Error("Failed to analyze sentiment");
       }
@@ -44,7 +49,7 @@ function RealTimeSentimentAnalysis() {
     } finally {
       setLoading(false);
     }
-  }, [token, text]); // Dependencies: token and text
+  }, [token, text ,logout]); // Dependencies: token and text
 
   // Handle Enter key press to trigger the analysis
   const handleKeyPress = (e) => {

@@ -13,7 +13,7 @@ const Home = () => {
       <section className="services">
         <h2>Our Services</h2>
         <div className="service-items">
-          <Link to="/RealTimeSentimentAnalysis" className="service-link">
+          <div className="service-link">
             <div className="service-item">
               <FontAwesomeIcon
                 icon={faMagnifyingGlass}
@@ -24,11 +24,13 @@ const Home = () => {
               <p>
                 Gain instant insights on how your audience feels in real-time.
               </p>
-              <button className="learn-more-button">Learn More</button>
+              <Link to="/realtime-sentiment-analysis">
+              <button className="analyze-button">Analyze</button>
+              </Link>
             </div>
-          </Link>
+          </div>
 
-          <Link to="/RedditAnalysis" className="service-link">
+          <div className="service-link">
             <div className="service-item">
               <FontAwesomeIcon
                 icon={faReddit}
@@ -40,11 +42,13 @@ const Home = () => {
                 Analyze comments on your Reddit posts for deep audience
                 insights.
               </p>
-              <button className="learn-more-button">Learn More</button>
+              <Link to="/realtime-sentiment-analysis">
+              <button className="analyze-button">Analyze</button>
+              </Link>
             </div>
-          </Link>
+          </div>
 
-          <Link to="/YouTubeAnalysis" className="service-link">
+          <div className="service-link">
             <div className="service-item">
               <FontAwesomeIcon
                 icon={faYoutube}
@@ -56,9 +60,11 @@ const Home = () => {
                 Understand viewer feedback and engagement on your YouTube
                 videos.
               </p>
-              <button className="learn-more-button">Learn More</button>
+              <Link to="/realtime-sentiment-analysis">
+              <button className="analyze-button">Analyze</button>
+              </Link>
             </div>
-          </Link>
+          </div>
         </div>
         <button className="contact-button">Contact Us</button>
       </section>

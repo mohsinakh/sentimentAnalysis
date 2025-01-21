@@ -56,14 +56,9 @@ body {
   background-color: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
   text-align: center;
 }
 
-.service-item:hover {
-  transform: translateY(-10px); /* Slight hover effect */
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
 
 .service-icon {
   font-size: 2rem;
@@ -83,7 +78,7 @@ body {
   line-height: 1.6; /* Improve line spacing for readability */
 }
 
-.learn-more-button {
+.analyze-button {
   background-color: #f5a623;
   color: #fff;
   border: none;
@@ -94,7 +89,7 @@ body {
   transition: background-color 0.3s, transform 0.2s ease-in-out;
 }
 
-.learn-more-button:hover {
+.analyze-button:hover {
   background-color: #e5941f;
   transform: scale(1.05); /* Slightly enlarge buttons on hover */
 }
@@ -134,7 +129,7 @@ body {
     width: 45%; /* Reduce width for two items per row */
   }
 
-  .learn-more-button {
+  .analyze-button {
     font-size: 1rem;
     padding: 10px 18px;
   }
@@ -166,7 +161,7 @@ body {
     font-size: 1.6rem;
   }
 
-  .learn-more-button,
+  .analyze-button,
   .contact-button {
     font-size: 0.9rem;
     padding: 8px 16px;
@@ -199,7 +194,7 @@ body {
     margin-bottom: 8px;
   }
 
-  .learn-more-button,
+  .analyze-button,
   .contact-button {
     font-size: 0.8rem;
     padding: 6px 12px;
@@ -226,7 +221,7 @@ body {
     font-size: 0.8rem;
   }
 
-  .learn-more-button {
+  .analyze-button {
     font-size: 0.75rem;
     padding: 5px 10px;
   }
@@ -242,16 +237,13 @@ body {
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.learn-more-button,
+.analyze-button,
 .contact-button {
   transition: background-color 0.3s, transform 0.2s ease-in-out;
 }
 
-.learn-more-button:hover,
+.analyze-button:hover,
 .contact-button:hover {
   transform: scale(1.05); /* Slightly enlarge buttons on hover */
 }
 
-.service-item:hover {
-  transform: translateY(-10px); /* Slight hover effect */
-}

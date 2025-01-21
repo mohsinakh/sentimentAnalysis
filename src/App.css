@@ -1,27 +1,27 @@
-/* App.css */
-
-/* Make sure the body and html take full height */
+/* Ensure html and body take full height */
 html, body {
   height: 100%;
   margin: 0;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Apply Flexbox layout to the entire app */
+/* Main app container takes remaining space */
 #app-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100vh; /* Full viewport height */
 }
 
 main {
-  flex-grow: 1; /* This will make the main content area take available space */
+  flex: 1; /* Fills available space */
+  background-color: #ffffff;
 }
 
-/* Footer Styles (already defined in Footer component) */
 footer {
-  background-color: #333;
-  color: #fff;
-  padding: 20px;
+  background-color: var(--footer-bg-color);
+  color: var(--footer-text-color);
+  padding: 10px;
   text-align: center;
-  width: 100%;
 }
+

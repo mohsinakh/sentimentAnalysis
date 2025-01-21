@@ -74,12 +74,33 @@ input:focus {
     outline: none;
 }
 
+
+
+/* Password Container */
+.password-container {
+    position: relative;
+  }
+  
+  /* Position the password toggle icon inside the input field */
+  .password-toggle-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 1; /* Ensure icon stays above input field */
+  }
+
+  
+  
+
 /* Error Message */
 .error-message {
     font-size: 0.9rem;
     color: red;
     margin-bottom: 10px;
 }
+
 
 
 /* Buttons */
@@ -103,6 +124,9 @@ input:focus {
 .btn:focus {
     outline: none;
 }
+
+
+
 
 /* Sign-Up Button */
 .signup-link {

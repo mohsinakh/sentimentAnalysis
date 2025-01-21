@@ -6,7 +6,7 @@ import { faReddit } from "@fortawesome/free-brands-svg-icons";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { Chart, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { AuthContext } from '../context/AuthContext';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -17,7 +17,6 @@ const RedditAnalysis = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showChart, setShowChart] = useState(false);
-  const navigate = useNavigate();
   const location = useLocation();
 
   const { token, logout } = useContext(AuthContext);
@@ -27,7 +26,6 @@ const RedditAnalysis = () => {
     if (!token) {
       setError("Please log in to continue.");
       logout();
-      navigate("/login");
       return;
     }
 
@@ -46,8 +44,7 @@ const RedditAnalysis = () => {
 
       if (response.status === 401) {
         setError("Session expired. Please log in again.");
-        logout();
-        navigate('/login');
+        // logout();
         return;
       }
 
@@ -80,7 +77,7 @@ const RedditAnalysis = () => {
     const stateUrl = location.state?.postId; // Extract Reddit URL from navigation state
     if (stateUrl) {
       setInput(stateUrl); // Update input field for UI
-      fetchComments(stateUrl); // Fetch data automatically
+      // fetchComments(stateUrl); // Fetch data automatically
     }
     // eslint-disable-next-line
   }, [location.state]);
