@@ -16,6 +16,8 @@ const Login = lazy(() => import('./pages/Login'));
 const Signup = lazy(() => import('./pages/Signup'));
 const LogoutPage = lazy(() => import('./pages/LogoutPage'));
 const AboutUs = lazy(() => import('./pages/AboutUs'));
+const Blog = lazy(()=> import('./pages/Blog'))
+
 
 // Error Boundary Component
 class ErrorBoundary extends React.Component {
@@ -62,6 +64,7 @@ const App = () => {
               <Route path="/signup" element={<Signup />} />
               <Route path="/logout" element={<LogoutPage />} />
               <Route path="/about" element={<AboutUs />} />
+              <Route path="/blog" element={<Blog />} />
               <Route path="/realtime-sentiment-analysis" element={<RealTimeSentimentAnalysis />} />
               <Route path="/reddit-analysis" element={<RedditAnalysis />} />
               <Route path="/youtube-analysis" element={<YoutubeAnalysis />} />

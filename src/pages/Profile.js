@@ -23,7 +23,10 @@ const Profile = () => {
         },
       });
 
-      if (!response.ok) return;
+      if (!response.ok) {
+        setLoadingHistory(false);
+        return}
+      ;
 
       const data = await response.json();
       setHistory(data.history || []);

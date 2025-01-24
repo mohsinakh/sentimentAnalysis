@@ -71,15 +71,12 @@
     text-align: center;
     font-size: 2rem;
     color: #00a8ff;
-    transition: transform 0.3s ease-in-out;
+
 }
 
-.mission-item:hover {
-    transform: scale(1.1);
-}
 
 .mission-item p {
-    margin-top: 10px;
+    margin: 10px 5px;
     font-size: 1rem;
     color: #2d3436;
 }
@@ -111,25 +108,42 @@
     margin-bottom: 30px;
     border-radius: 15px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition:  box-shadow 0.3s ease;
     background-color: #fff;
 }
 
 .team-member:hover {
-    transform: translateY(-10px);
     box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15);
 }
 
 .team-member img {
     width: 100%;
+    margin-top: 20px;
     max-width: 200px;
     height: 200px;
     object-fit: cover;
     border-radius: 50%;
     margin-bottom: 15px;
+    padding: 10px; /* Added padding around the image */
     border: 3px solid #00a8ff;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
 }
+
+.linkedin-link {
+    display: inline-block;
+    margin: 10px 0px;
+    font-size: 1rem;
+    color: #0077b5;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease transform 0.5 ease;
+}
+
+.linkedin-link:hover {
+    color: #005582;
+    transform: scale(1.05);
+}
+
 
 .team-member h3 {
     font-size: 1.5rem;
@@ -161,9 +175,22 @@
     }
 
     .team-member {
-        width: 45%;
+        width: 75%
     }
+
+    
 }
+
+@media screen and (max-width : 600px) {
+    .team-member {
+        width: 80%
+    }
+
+    
+}
+
+
+
 
 @media screen and (max-width: 480px) {
     .aboutus-header h1 {
@@ -174,8 +201,8 @@
         font-size: 1.8rem;
     }
 
-    .team-member img {
-        max-width: 150px;
+    .team-member {
+        width: 100%
     }
 
     .team-member h3 {

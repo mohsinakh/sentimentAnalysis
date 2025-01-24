@@ -96,9 +96,7 @@ footer a:hover {
 }
 
 @media screen and (max-width: 768px) {
-  footer {
-    display: none;
-  }
+  
 
   .footer-container {
     padding: 15px;

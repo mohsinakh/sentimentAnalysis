@@ -1,0 +1,126 @@
+/* General Styles */
+.blog-container {
+  font-family: 'Arial', sans-serif;
+  color: #333;
+}
+
+.blog-header {
+  background-color: #E53935;
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.blog-header h1 {
+  font-size: 3rem;
+  margin: 0;
+}
+
+.blog-header p {
+  font-size: 1.2rem;
+  margin-top: 10px;
+}
+
+.blog-content {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+/* Blog Posts */
+.blog-posts {
+  width: 75%;
+}
+
+.blog-post {
+  background-color: #f9f9f9;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.blog-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.blog-post h2 {
+  font-size: 2rem;
+  color: #E53935;
+}
+
+.read-more {
+  display: inline-block;
+  margin-top: 10px;
+  color: #E53935;
+  font-weight: bold;
+}
+
+.pagination {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.page-btn {
+  background-color: #E53935;
+  color: white;
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.page-btn:hover {
+  background-color: #C62828;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 20%;
+}
+
+.recent-posts, .categories {
+  background-color: #f4f4f4;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+.recent-posts ul, .categories ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.recent-posts li, .categories li {
+  margin-bottom: 10px;
+}
+
+.recent-posts a, .categories a {
+  color: #E53935;
+  text-decoration: none;
+}
+
+.recent-posts a:hover, .categories a:hover {
+  text-decoration: underline;
+}
+
+/* Footer */
+.blog-footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+.footer-links a {
+  color: white;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}

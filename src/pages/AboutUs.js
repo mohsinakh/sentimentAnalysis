@@ -1,7 +1,12 @@
 import React from 'react';
 import './css/AboutUs.css';
+import mohsin from '../img/mohsin.png';
+import muskan from '../img/muskan.png';
+import mohit from '../img/mohit.jpeg';
+import abdul from '../img/abdul.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHandshake, faRocket, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faLinkedin } from '@fortawesome/free-brands-svg-icons';
 
 const AboutUs = () => {
   return (
@@ -15,7 +20,7 @@ const AboutUs = () => {
         <div className="mission-text">
           <h2>Our Mission</h2>
           <p>
-            At <strong>Sentiment Sense </strong>, we aim to leverage cutting-edge technology to create impactful solutions that solve real-world problems.
+            At <strong>Sentiment Sense</strong>, we aim to leverage cutting-edge technology to create impactful solutions that solve real-world problems.
             Our project is built on collaboration, innovation, and the shared vision of our diverse team.
           </p>
         </div>
@@ -39,24 +44,36 @@ const AboutUs = () => {
         <h2>Meet the Team</h2>
         <div className="team-members">
           <div className="team-member">
-            <img src="team-member1.jpg" alt="Team Member 1" />
-            <h3>John Doe</h3>
+            <img src={mohsin} alt="Mohsin Abbas" />
+            <h3>Mohsin Abbas</h3>
             <p>Lead Developer</p>
+            <a href="https://www.linkedin.com/in/mohsin-abbas-7252b126b/" target="_blank" rel="noopener noreferrer" className="linkedin-link">
+            <FontAwesomeIcon icon={faLinkedin}/> Profile
+            </a>
           </div>
           <div className="team-member">
-            <img src="team-member2.jpg" alt="Team Member 2" />
-            <h3>Jane Smith</h3>
-            <p>Project Manager</p>
+            <img src={muskan} alt="Muskan Alam" />
+            <h3>Muskan Alam</h3>
+            <p>Frontend Developer</p>
+            <a href="https://www.linkedin.com/in/muskan-alam-628b28291/" target="_blank" rel="noopener noreferrer" className="linkedin-link">
+            <FontAwesomeIcon icon={faLinkedin}/> Profile
+            </a>
           </div>
           <div className="team-member">
-            <img src="team-member3.jpg" alt="Team Member 3" />
-            <h3>James Brown</h3>
+            <img src={mohit} alt="Mohit Jaiswal" />
+            <h3>Mohit Jaiswal</h3>
             <p>UI/UX Designer</p>
+            <a href="https://www.linkedin.com/in/mohit" target="_blank" rel="noopener noreferrer" className="linkedin-link">
+            <FontAwesomeIcon icon={faLinkedin}/> Profile
+            </a>
           </div>
           <div className="team-member">
-            <img src="team-member4.jpg" alt="Team Member 4" />
-            <h3>Sarah Lee</h3>
+            <img src={abdul} alt="Abdul Rafey Ansari" />
+            <h3>Abdul Rafey Ansari</h3>
             <p>Data Scientist</p>
+            <a href="https://www.linkedin.com/in/abdul" target="_blank" rel="noopener noreferrer" className="linkedin-link">
+              <FontAwesomeIcon icon={faLinkedin}/> Profile
+            </a>
           </div>
         </div>
       </section>

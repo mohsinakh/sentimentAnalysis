@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faUser, faInfoCircle, faEnvelope, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { AuthContext } from '../context/AuthContext';
 import "./css/Navbar.css";
+import logo from "../img/logo.png"
 import { faServicestack } from '@fortawesome/free-brands-svg-icons';
 
 function Navbar() {
@@ -55,7 +56,8 @@ function Navbar() {
       {/* Header Section */}
       <header>
         <div className="logo">
-          <Link to="/">Sentiment Sense</Link>
+
+          <Link to="/"><img src={logo} alt='' className='logo-img'></img>Sensiment</Link>
         </div>
 
         {/* Desktop Navigation */}
@@ -90,7 +92,7 @@ function Navbar() {
             </li>
             <li>
               <Link
-                to="/services"
+                to="/#services"
                 className={`nav-link ${activePath === "/services" ? "active" : ""}`}
                 onClick={() => handleNavClick("/services")}
               >
