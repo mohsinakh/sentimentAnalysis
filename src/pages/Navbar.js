@@ -57,7 +57,7 @@ function Navbar() {
       <header>
         <div className="logo">
 
-          <Link to="/"><img src={logo} alt='' className='logo-img'></img>Sensiment</Link>
+          <Link to="/"><img src={logo} alt='' className='logo-img'></img>Sentiment</Link>
         </div>
 
         {/* Desktop Navigation */}
