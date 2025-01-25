@@ -1,0 +1,25 @@
+.docs-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .docs-container h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+  
+  .docs-container h2 {
+    margin-top: 30px;
+    font-size: 1.5em;
+  }
+  
+  .docs-container p {
+    font-size: 1em;
+    margin-bottom: 10px;
+  }
+  
+  .docs-container ul {
+    list-style-type: disc;
+    padding-left: 20px;
+  }
+  

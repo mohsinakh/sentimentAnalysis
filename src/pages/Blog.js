@@ -1,109 +1,104 @@
-import React from "react";
+import React, { useState } from "react";
 import "./css/Blog.css";
-import { Link } from "react-router-dom";
+import blogData from "../blog.json";
+import { useToast } from '../context/ToastContext'; // Importing the toast context
 
 const Blog = () => {
+  const postsPerPage = 3; // Number of posts to display per page
+  const [currentPage, setCurrentPage] = useState(1);
+  const { showToast } = useToast(); // Using the toast context
+
+  // Calculate the indices for slicing the blog posts array
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = blogData.blogs.slice(indexOfFirstPost, indexOfLastPost);
+
+  // Function to handle page change and scroll to top
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top smoothly
+    showToast('Page changed successfully!', 'success'); // Trigger a toast notification
+  };
+
+  // Total number of pages
+  const totalPages = Math.ceil(blogData.blogs.length / postsPerPage);
+
   return (
     <div className="blog-container">
       {/* Blog Header */}
       <header className="blog-header">
         <h1>Insights & Articles</h1>
-        <p>Stay updated with the latest trends, news, and insights in sentiment analysis and AI technology.</p>
+        <p>
+          Stay updated with the latest trends, news, and insights in sentiment
+          analysis and AI technology.
+        </p>
       </header>
 
+      {/* Blog Content */}
       <div className="blog-content">
-        {/* Main Blog Posts */}
+        {/* Main Blog Posts Section */}
         <section className="blog-posts">
-          <article className="blog-post">
-            <img
-              src="https://via.placeholder.com/800x400"
-              alt="Sentiment Analysis"
-              className="blog-image"
-            />
-            <h2>
-              <Link to="/post1">The Power of Sentiment Analysis in Social Media</Link>
-            </h2>
-            <p>
-              Social media platforms have become the main source of communication and interaction, making sentiment analysis a crucial tool...
-            </p>
-            <Link to="/post1" className="read-more">
-              Read More
-            </Link>
-          </article>
-
-          <article className="blog-post">
-            <img
-              src="https://via.placeholder.com/800x400"
-              alt="AI Insights"
-              className="blog-image"
-            />
-            <h2>
-              <Link to="/post2">AI and Its Role in Real-Time Sentiment Detection</Link>
-            </h2>
-            <p>
-              Artificial Intelligence is reshaping the way we understand emotions and feedback from digital platforms...
-            </p>
-            <Link to="/post2" className="read-more">
-              Read More
-            </Link>
-          </article>
-
-          <article className="blog-post">
-            <img
-              src="https://via.placeholder.com/800x400"
-              alt="Reddit Analysis"
-              className="blog-image"
-            />
-            <h2>
-              <Link to="/post3">How Reddit Comment Analysis is Shaping Opinions</Link>
-            </h2>
-            <p>
-              Reddit’s comment section is a treasure trove of valuable insights, and understanding public sentiment can be a game-changer...
-            </p>
-            <Link to="/post3" className="read-more">
-              Read More
-            </Link>
-          </article>
-
-          {/* Pagination */}
-          <div className="pagination">
-            <button className="page-btn">Previous</button>
-            <button className="page-btn">1</button>
-            <button className="page-btn">2</button>
-            <button className="page-btn">Next</button>
-          </div>
+          {currentPosts.map((blog, index) => (
+            <article className="blog-post" key={index}>
+              <h2>
+                <a href={blog.link} target="_blank" rel="noopener noreferrer"  onClick={() => showToast('Redirecting to article...', 'info')}>
+                  {blog.title}
+                </a>
+              </h2>
+              <p>{blog.description}</p>
+              <img
+                src={blog.image}
+                alt={blog.title}
+                className="blog-image"
+              />
+              <a
+                href={blog.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="read-more"
+                onClick={() => showToast('Redirecting to article...', 'info')} // Trigger toast on read more
+              >
+                Read More
+              </a>
+            </article>
+          ))}
         </section>
 
         {/* Sidebar */}
         <aside className="sidebar">
+          {/* Recent Posts */}
           <div className="recent-posts">
             <h3>Recent Posts</h3>
             <ul>
-              <li><Link to="/post1">The Power of Sentiment Analysis in Social Media</Link></li>
-              <li><Link to="/post2">AI and Its Role in Real-Time Sentiment Detection</Link></li>
-              <li><Link to="/post3">How Reddit Comment Analysis is Shaping Opinions</Link></li>
-            </ul>
-          </div>
-
-          <div className="categories">
-            <h3>Categories</h3>
-            <ul>
-              <li><Link to="/category/ai">AI Technology</Link></li>
-              <li><Link to="/category/sentiment">Sentiment Analysis</Link></li>
-              <li><Link to="/category/socialmedia">Social Media</Link></li>
+              {blogData.blogs.slice(0, 5).map((blog, index) => (
+                <li key={index}>
+                  <a
+                    href={blog.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => showToast('Viewing a recent post...', 'info')} // Toast for recent posts
+                  >
+                    {blog.title}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
         </aside>
       </div>
 
-      {/* Footer */}
-      <footer className="blog-footer">
-        <p>&copy; 2025 Sentiment Sense | All Rights Reserved</p>
-        <div className="footer-links">
-          <Link to="/about">About Us</Link>
-          <Link to="/contact">Contact</Link>
-        </div>
-      </footer>
+      {/* Pagination */}
+      <div className="pagination">
+        {[...Array(totalPages)].map((_, index) => (
+          <button
+            key={index + 1}
+            className="page-btn"
+            onClick={() => paginate(index + 1)}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };

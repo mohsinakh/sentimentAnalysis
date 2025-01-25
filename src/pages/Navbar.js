@@ -3,13 +3,15 @@ import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faUser, faInfoCircle, faEnvelope, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { AuthContext } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext'; // Importing the toast context
 import "./css/Navbar.css";
-import logo from "../img/logo.png"
+import logo from "../img/logo.png";
 import { faServicestack } from '@fortawesome/free-brands-svg-icons';
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { token, logout } = useContext(AuthContext);
+  const { showToast } = useToast(); // Using the toast context
   const location = useLocation();
   const [activePath, setActivePath] = useState(location.pathname); // Initialize activePath with the current path
   const sideNavRef = useRef(null);
@@ -51,13 +53,17 @@ function Navbar() {
     if (isOpen) setIsOpen(false); // Close sidebar after clicking a navigation item (for mobile)
   };
 
+  const handleLogout = () => {
+    logout();
+    showToast('You have logged out successfully!', 'success'); // Show success toast on logout
+  };
+
   return (
-    <div >
+    <div>
       {/* Header Section */}
       <header>
         <div className="logo">
-
-          <Link to="/"><img src={logo} alt='' className='logo-img'></img>Sentiment</Link>
+          <Link to="/"><img src={logo} alt='' className='logo-img' />Sentiment</Link>
         </div>
 
         {/* Desktop Navigation */}
@@ -100,6 +106,15 @@ function Navbar() {
               </Link>
             </li>
             <li>
+                <Link
+                  to="/docs"
+                  className={`nav-link ${activePath === "/docs" ? "active" : ""}`}
+                  onClick={() => handleNavClick("/docs")}
+                >
+                  <FontAwesomeIcon icon={faInfoCircle} /> Docs
+                </Link>
+            </li>
+            <li>
               <Link
                 to="/blog"
                 className={`nav-link ${activePath === "/blog" ? "active" : ""}`}
@@ -128,13 +143,16 @@ function Navbar() {
             </li>
             {token ? (
               <li>
-                <button onClick={logout} className="nav-link btn btn">
+                <button onClick={handleLogout} className="nav-link btn btn">
                   Logout
                 </button>
               </li>
             ) : (
               <li>
-                <Link to="/login" className="btn btn">
+                <Link
+                  to="/login"
+                  className="btn btn"
+                >
                   Login/SignUp
                 </Link>
               </li>
@@ -177,28 +195,68 @@ function Navbar() {
               className={`nav-link ${activePath === "/about" ? "active" : ""}`}
               onClick={() => handleNavClick("/about")}
             >
-              <FontAwesomeIcon icon={faInfoCircle} /> About
+              <FontAwesomeIcon icon={faInfoCircle} /> About Us
             </Link>
           </li>
           <li>
-            <Link
-              to="/contact"
-              className={`nav-link ${activePath === "/contact" ? "active" : ""}`}
-              onClick={() => handleNavClick("/contact")}
-            >
-              <FontAwesomeIcon icon={faEnvelope} /> Contact
-            </Link>
+              <Link
+                to="/#services"
+                className={`nav-link ${activePath === "/services" ? "active" : ""}`}
+                onClick={() => handleNavClick("/services")}
+              >
+                <FontAwesomeIcon icon={faServicestack} /> Services
+              </Link>
           </li>
+          <li>
+                <Link
+                  to="/docs"
+                  className={`nav-link ${activePath === "/docs" ? "active" : ""}`}
+                  onClick={() => handleNavClick("/docs")}
+                >
+                  <FontAwesomeIcon icon={faInfoCircle} /> Docs
+                </Link>
+            </li>
+            <li>
+              <Link
+                to="/blog"
+                className={`nav-link ${activePath === "/blog" ? "active" : ""}`}
+                onClick={() => handleNavClick("/blog")}
+              >
+                <FontAwesomeIcon icon={faInfoCircle} /> Blog
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/contact"
+                className={`nav-link ${activePath === "/contact" ? "active" : ""}`}
+                onClick={() => handleNavClick("/contact")}
+              >
+                <FontAwesomeIcon icon={faEnvelope} /> Contact Us
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/faqs"
+                className={`nav-link ${activePath === "/faqs" ? "active" : ""}`}
+                onClick={() => handleNavClick("/faqs")}
+              >
+                <FontAwesomeIcon icon={faQuestionCircle} /> FAQs
+              </Link>
+            </li>
 
           {token ? (
             <li>
-              <button onClick={logout} className="nav-link btn btn">
+              <button onClick={handleLogout} className="nav-link btn btn">
                 Logout
               </button>
             </li>
           ) : (
             <li>
-              <Link to="/login" className="btn btn">
+              <Link
+                to="/login"
+                className={`btn btn nav-link ${activePath === "/login" ? "active" : ""}`}
+                onClick={() => handleNavClick("/login")}
+              >
                 Login/SignUp
               </Link>
             </li>

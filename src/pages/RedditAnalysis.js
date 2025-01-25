@@ -7,6 +7,7 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { Chart, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { AuthContext } from '../context/AuthContext';
 import { useLocation } from 'react-router-dom';
+import Loading from './Loading';
 
 Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -77,7 +78,7 @@ const RedditAnalysis = () => {
     const stateUrl = location.state?.postId; // Extract Reddit URL from navigation state
     if (stateUrl) {
       setInput(stateUrl); // Update input field for UI
-      // fetchComments(stateUrl); // Fetch data automatically
+      fetchComments(stateUrl); // Fetch data automatically
     }
     // eslint-disable-next-line
   }, [location.state]);
@@ -140,7 +141,7 @@ const RedditAnalysis = () => {
         </button>
       </div>
       {error && <p className="error-message">{error}</p>}
-      {loading && <p>Loading...</p>}
+      {loading && <Loading/>}
 
       {postData && (
         <div className="post-embed">

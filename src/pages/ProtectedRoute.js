@@ -1,12 +1,20 @@
-// src/components/ProtectedRoute.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
+import { useToast } from '../context/ToastContext';
 
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = Boolean(localStorage.getItem('access_token'));
-  console.log('Is Authenticated:', isAuthenticated); // Debug
+  const { showToast } = useToast();
+  const [redirect, setRedirect] = useState(false);
 
-  if (!isAuthenticated) {
+  useEffect(() => {
+    if (!isAuthenticated) {
+      showToast('Please log in to access this page.', 'warning');
+      setRedirect(true);
+    }
+  }, [isAuthenticated, showToast]);
+
+  if (redirect) {
     return <Navigate to="/login" />;
   }
 

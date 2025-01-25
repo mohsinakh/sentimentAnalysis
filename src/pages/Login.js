@@ -1,10 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext,useEffect } from 'react';
 import "./css/Login.css";
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Loading from './Loading'; // Import the Loading component
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { useToast } from '../context/ToastContext'; // Importing the toast context
 
 const Login = () => {
   const { login } = useContext(AuthContext); // Access login function from context
@@ -13,6 +14,19 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false); // Loading state
   const [showPassword, setShowPassword] = useState(false); // State for showing/hiding password
   const navigate = useNavigate();
+  const { showToast } = useToast(); // Using the toast context
+
+
+    // Automatically fill in the form with user data from localStorage
+    useEffect(() => {
+      const savedUser = localStorage.getItem('user');
+      if (savedUser) {
+        const { email, username,password } = JSON.parse(savedUser);
+        setFormData({ credential: email || username, password: password });
+      }
+    }, []);
+
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -44,11 +58,15 @@ const Login = () => {
       // Optionally, save the user data in localStorage as well
       localStorage.setItem('user', JSON.stringify(data.user)); 
 
+      // Show success toast
+      showToast('Login successful! Redirecting to profile...', 'success');
+
       // Redirect to profile or another page
       navigate('/profile');
     } catch (err) {
       console.error(err.message);
       setError('Invalid username/email or password'); // Set error message
+      showToast('Login failed. Please check your credentials.', 'error'); // Show error toast
     } finally {
       setIsLoading(false); // Hide loading spinner
     }

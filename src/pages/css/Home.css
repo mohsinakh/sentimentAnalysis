@@ -97,8 +97,11 @@ body {
 /* Contact Button */
 .contact-button {
   background-color: #f5a623;
+  text-decoration: none;
   display: block;
-  margin: 50px auto;
+  text-align: center;
+  margin: 60px auto;
+  margin-top: 30vh;
   border: none;
   padding: 12px 25px;
   color: #fff;
@@ -106,12 +109,15 @@ body {
   cursor: pointer;
   border-radius: 5px;
   transition: background-color 0.3s, transform 0.2s ease-in-out;
+  width: 20%;
+
 }
 
 .contact-button:hover {
   background-color: #e5941f;
   transform: scale(1.05); /* Slightly enlarge button on hover */
 }
+
 
 
 
@@ -135,6 +141,10 @@ body {
   .analyze-button {
     font-size: 1rem;
     padding: 10px 18px;
+  }
+  .contact-button {
+    width: 30%; /* Make the button span most of the screen width */
+  
   }
 }
 
@@ -168,6 +178,12 @@ body {
   .contact-button {
     font-size: 0.9rem;
     padding: 8px 16px;
+  }
+
+  .contact-button {
+    width: 40%; /* Make the button span most of the screen width */
+    margin-top: 15vh;
+  
   }
 }
 
@@ -204,8 +220,8 @@ body {
   }
 
   .contact-button {
-    width: 90%; /* Make the button span most of the screen width */
-    text-align: center;
+    width: 60%; /* Make the button span most of the screen width */
+  
   }
 }
 
@@ -232,6 +248,7 @@ body {
   .contact-button {
     font-size: 0.75rem;
     padding: 5px 10px;
+    max-width: 60%;
   }
 }
 

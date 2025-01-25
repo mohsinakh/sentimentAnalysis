@@ -1,18 +1,21 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import './css/Profile.css';  // Importing the CSS file
+import './css/Profile.css'; // Importing the CSS file
 import { faEnvelope, faSmile, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faReddit, faYoutube } from '@fortawesome/free-brands-svg-icons';
-import Loading from './Loading';  // Import the Loading component
+import { useToast } from '../context/ToastContext'; // Importing toast context
+import Loading from './Loading'; // Import the Loading component
 
 const Profile = () => {
   const { token } = useContext(AuthContext);
   const [user, setUser] = useState(null);
   const [history, setHistory] = useState([]);
-  const [loadingHistory, setLoadingHistory] = useState(true);  // State for tracking loading status of history
+  const [loadingHistory, setLoadingHistory] = useState(true); // State for tracking loading status of history
   const navigate = useNavigate();
+  const { showToast } = useToast(); 
+  
 
   const fetchHistory = useCallback(async (username) => {
     try {
@@ -25,31 +28,29 @@ const Profile = () => {
 
       if (!response.ok) {
         setLoadingHistory(false);
-        return}
-      ;
+        return;
+      }
 
       const data = await response.json();
       setHistory(data.history || []);
-      setLoadingHistory(false);  // Set loadingHistory to false once data is fetched
+      setLoadingHistory(false); // Set loadingHistory to false once data is fetched
+
+      showToast('Analysis history loaded successfully!', 'success');
     } catch (error) {
       console.error('Error fetching analysis history:', error);
-      setLoadingHistory(false);  // Ensure loading is stopped even in case of error
+      setLoadingHistory(false); // Ensure loading is stopped even in case of error
+      showToast('An error occurred while loading the history.', 'error');
     }
-  }, [token]);
+    // eslint-disable-next-line
+  }, [token ]);
 
   useEffect(() => {
-    if (!token) {
-      navigate('/login');
-    } else {
-      const fetchedUser = JSON.parse(localStorage.getItem('user')) || null;
-      if (fetchedUser) {
-        setUser(fetchedUser);
-        fetchHistory(fetchedUser.username);
-      } else {
-        navigate('/login');
-      }
+    const fetchedUser = JSON.parse(localStorage.getItem('user')) || null;
+    if (fetchedUser) {
+      setUser(fetchedUser);
+      fetchHistory(fetchedUser.username);
     }
-  }, [token, navigate, fetchHistory]);
+  }, [fetchHistory]);
 
   const sentimentHistory = history.filter(item => item.analysis_type === 'sentiment');
   const youtubeHistory = history.filter(item => item.analysis_type === 'youtube');
@@ -57,15 +58,18 @@ const Profile = () => {
 
   // Handle re-analysis for individual items
   const handleReanalyzeSentiment = (item) => {
-    navigate('/RealTimeSentimentAnalysis', { state: { analysisData: item.analysis_data.text } });
+    showToast('Re-analyzing sentiment...', 'info');
+    navigate('/realtime-sentiment-analysis', { state: { analysisData: item.analysis_data.text } });
   };
 
   const handleReanalyzeYouTube = (item) => {
-    navigate('/YouTubeAnalysis', { state: { videoUrl: `https://youtu.be/${item.analysis_data.video_id}`} });
+    showToast('Re-analyzing YouTube video...', 'info'); 
+    navigate('/youtube-analysis', { state: { videoUrl: `https://youtu.be/${item.analysis_data.video_id}`} });
   };
 
   const handleReanalyzeReddit = (item) => {
-    navigate('/RedditAnalysis', { state:  { postId:`https://reddit/comments/${item.analysis_data.post_id}` }  });
+    showToast('Re-analyzing Reddit post...', 'info');
+    navigate('/reddit-analysis', { state:  { postId:`https://reddit/comments/${item.analysis_data.post_id}` } });
   };
 
   return (
@@ -79,7 +83,7 @@ const Profile = () => {
           <div className="history-section">
             <h3>Analysis History</h3>
             {loadingHistory ? (
-              <Loading />  // Show loading spinner while history is being fetched
+              <Loading /> // Show loading spinner while history is being fetched
             ) : (
               <div className="history-category-container">
                 {sentimentHistory.length > 0 && (

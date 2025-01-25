@@ -3,6 +3,8 @@ import { Routes, Route } from 'react-router-dom'; // No need to import BrowserRo
 import ProtectedRoute from './pages/ProtectedRoute';
 import Loading from './pages/Loading';
 import "./App.css"
+import { ToastProvider } from './context/ToastContext';
+
 
 // Lazy loading components
 const Navbar = lazy(() => import('./pages/Navbar'));
@@ -15,8 +17,14 @@ const Profile = lazy(() => import('./pages/Profile'));
 const Login = lazy(() => import('./pages/Login'));
 const Signup = lazy(() => import('./pages/Signup'));
 const LogoutPage = lazy(() => import('./pages/LogoutPage'));
-const AboutUs = lazy(() => import('./pages/AboutUs'));
-const Blog = lazy(()=> import('./pages/Blog'))
+const AboutUs = lazy(() => import('./pages/About'));
+const Blog = lazy(()=> import('./pages/Blog'));
+const Contact = lazy(()=> import('./pages/Contact'));
+const Faq = lazy(()=> import('./pages/Faq'));
+const NotFound = lazy(() => import ('./pages/NotFound'));
+const Docs = lazy(() => import ('./pages/Docs'));
+const Privacy = lazy(() => import ('./pages/PrivacyPolicy'));
+const Terms = lazy(() => import ('./pages/TermsOfUse'));
 
 
 // Error Boundary Component
@@ -47,6 +55,7 @@ const App = () => {
   return (
     <div id="app-container">
       <ErrorBoundary>
+       <ToastProvider>
         <Suspense fallback={<Loading />}>
           <Navbar />
           <main>
@@ -59,20 +68,26 @@ const App = () => {
                     <Profile />
                   </ProtectedRoute>
                 }
-              />
+                />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/logout" element={<LogoutPage />} />
               <Route path="/about" element={<AboutUs />} />
+              <Route path="/docs" element={<Docs />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/faqs" element={<Faq />} />
               <Route path="/realtime-sentiment-analysis" element={<RealTimeSentimentAnalysis />} />
               <Route path="/reddit-analysis" element={<RedditAnalysis />} />
               <Route path="/youtube-analysis" element={<YoutubeAnalysis />} />
-              <Route path="*" element={<h1>404 - Page Not Found</h1>} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="*" element={<NotFound/>} />
             </Routes>
           </main>
           <Footer />
         </Suspense>
+       </ToastProvider>
       </ErrorBoundary>
     </div>
   );

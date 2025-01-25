@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const AuthContext = createContext();
 
-const AUTO_LOGOUT_TIME = 400 * 60 * 1000; // 400 minutes in milliseconds
+const AUTO_LOGOUT_TIME = 200 * 60 * 1000; // 400 minutes in milliseconds
 
 const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(() => localStorage.getItem('access_token'));
