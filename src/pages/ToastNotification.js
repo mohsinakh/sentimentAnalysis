@@ -1,7 +1,7 @@
 import React from 'react';
 import './css/ToastNotification.css';
 
-const ToastNotification = ({ message, type, position = 'top-right', duration = 4000, customStyles = {} }) => {
+const ToastNotification = ({ message, type, position = 'top-right', duration = 200, customStyles = {} }) => {
   let bgColor;
   let icon;
 

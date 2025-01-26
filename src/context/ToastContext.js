@@ -18,7 +18,7 @@ export const ToastProvider = ({ children }) => {
     setToast({ message, type, visible: true });
     setTimeout(() => {
       setToast({ message: '', type: '', visible: false });
-    }, 4000); // Toast disappears after 4 seconds
+    }, 2000); // Toast disappears after 1 seconds
   };
 
   return (

@@ -21,7 +21,7 @@ function YoutubeAnalysis() {
   const [negativeCount, setNegativeCount] = useState(0);
   const [showChart, setShowChart] = useState(false); // State to toggle chart visibility
   const [loading, setLoading] = useState(false);
-  const { token, logout } = useContext(AuthContext);
+  const { token, logout ,host } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -49,7 +49,7 @@ function YoutubeAnalysis() {
     }
 
     try {
-      const response = await fetch("https://sentiment-analysis-api-eight.vercel.app/fetch-comments", {
+      const response = await fetch(`${host}/fetch-comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -91,7 +91,7 @@ function YoutubeAnalysis() {
       setError("Error fetching comments. Please check the URL and try again.");
       setLoading(false);
     }
-  }, [token, logout, navigate]);
+  }, [token, logout, navigate,host]);
 
   useEffect(() => {
     const state = location.state;

@@ -4,7 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import { useLocation } from 'react-router-dom';
 
 function RealTimeSentimentAnalysis() {
-  const { token,logout } = useContext(AuthContext);
+  const { token,logout,host } = useContext(AuthContext);
   const { state } = useLocation(); // Get the passed data from navigate
   const analysisData = state?.analysisData; // This contains the text for sentiment analysis
   const [text, setText] = useState(analysisData || ""); // Use the passed text or default to empty
@@ -25,7 +25,7 @@ function RealTimeSentimentAnalysis() {
     setSentiment("");
 
     try {
-      const response = await fetch("https://sentiment-analysis-api-eight.vercel.app/analyze-sentiment", {
+      const response = await fetch(`${host}/analyze-sentiment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -49,7 +49,7 @@ function RealTimeSentimentAnalysis() {
     } finally {
       setLoading(false);
     }
-  }, [token, text ,logout]); // Dependencies: token and text
+  }, [token, text ,logout,host]); // Dependencies: token and text
 
   // Handle Enter key press to trigger the analysis
   const handleKeyPress = (e) => {

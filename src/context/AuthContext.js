@@ -8,6 +8,9 @@ const AUTO_LOGOUT_TIME = 200 * 60 * 1000; // 400 minutes in milliseconds
 const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(() => localStorage.getItem('access_token'));
   const naviagte = useNavigate();
+  
+  const host = process.env.REACT_APP_HOST;  // Fetch API URL from environment variable
+
 
   const logout = useCallback(() => {
     localStorage.removeItem('access_token');
@@ -44,7 +47,7 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ token, login, logout }}>
+    <AuthContext.Provider value={{ token, login, logout ,host}}>
       {children}
     </AuthContext.Provider>
   );

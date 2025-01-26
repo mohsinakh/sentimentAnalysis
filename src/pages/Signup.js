@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState,useContext,useEffect } from 'react';
+import { useNavigate,useLocation } from 'react-router-dom';
 import './css/Signup.css';
 import Loading from './Loading'; // Import the Loading component
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useToast } from '../context/ToastContext'; // Importing the toast context
+import { useGoogleLogin } from '@react-oauth/google'; // Assuming you're using react-oauth/google package for Google login
+import {AuthContext} from '../context/AuthContext';
+import googleimg from "../img/google.png"
+
+
 
 const Signup = () => {
   const [formData, setFormData] = useState({ username: '', email: '', password: '', confirmPassword: '' });
@@ -17,6 +22,10 @@ const Signup = () => {
   const [emailError, setEmailError] = useState('');
   const navigate = useNavigate();
   const { showToast } = useToast(); // Using the toast context
+  const { login,host } = useContext(AuthContext); 
+  const location = useLocation();
+  const { codeResponse } = location.state || {};  // Getting the token passed from login
+
 
   // Password validation regex
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
@@ -81,7 +90,7 @@ const Signup = () => {
 
     try {
       // First, check if the username or email already exists
-      const checkResponse = await fetch('https://sentiment-analysis-api-eight.vercel.app/check-user', {
+      const checkResponse = await fetch(`${host}/check-user`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -97,7 +106,7 @@ const Signup = () => {
       }
 
       // Send a POST request to the backend to register the user
-      const response = await fetch('https://sentiment-analysis-api-eight.vercel.app/register/', {
+      const response = await fetch(`${host}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -129,6 +138,63 @@ const Signup = () => {
       setIsLoading(false); // Hide loading spinner
     }
   };
+
+
+  const handleGoogleSignup = async (tokenResponse) => {
+    try {
+      const googleSignupData = {
+        token: tokenResponse.access_token,
+      };
+
+      const response = await fetch(`${host}/google-signup`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(googleSignupData),
+      });
+
+      const data = await response.json();
+
+      // Check for a 404 error (user not found)
+      if (response.status === 500) {
+        showToast("Google User already exist. Redirecting to Login page...", "warning");
+        navigate("/login"); // Redirect to signup page
+        return;
+      }
+
+
+
+      if (response.ok) {
+        // Store the JWT token in localStorage (or sessionStorage)
+        login(data.access_token)
+        localStorage.setItem("user", data.user_info);
+        showToast(data.message, 'success');
+        navigate('/profile');  // Or navigate to any authenticated page
+      } else {
+        showToast(data.detail || 'Google signup failed', 'error');
+      }
+    } catch (error) {
+      console.error('Google signup failed:', error);
+      showToast('Failed to sign up with Google', 'error');
+    }
+  };
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: handleGoogleSignup,
+    onError: (error) => {
+      console.error('Google Login Failed:', error);
+      showToast('Google login failed. Please try again.', 'error');
+    },
+  });
+
+
+  useEffect(() => {
+    if (codeResponse) {
+      handleGoogleSignup(codeResponse);  // Automatically trigger signup
+    }
+    // eslint-disable-next-line
+  }, [codeResponse]);
 
   return (
     <div className="signup-container">
@@ -202,6 +268,12 @@ const Signup = () => {
           <button className="signup-button" type="submit">Sign Up</button>
         </form>
       )}
+            <div className='google-btn-container'>
+          <button className="button-google" onClick={googleLogin}>
+              <img src={googleimg} alt="Google Icon" className="google-icon" />
+              Login with Google
+          </button>
+      </div>
       <p>
         Already have an account?{' '}
         <span className="login-button" onClick={() => navigate('/login')}>Login</span>

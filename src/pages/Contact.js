@@ -1,8 +1,8 @@
-import React, { useState, useRef } from 'react';
-import emailjs from '@emailjs/browser';
+import React, { useState, useRef,useContext } from 'react';
 import './css/Contact.css'; // Import your CSS file
 import Loading from './Loading';
-import {useToast} from "../context/ToastContext"
+import { useToast } from "../context/ToastContext";
+import { AuthContext } from '../context/AuthContext';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -12,7 +12,8 @@ const Contact = () => {
   });
   const [isLoading, setIsLoading] = useState(false); // New state to track loading
   const form = useRef();
-  const { showToast } = useToast(); 
+  const { showToast } = useToast();
+  const { host } = useContext(AuthContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,41 +23,46 @@ const Contact = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     setIsLoading(true); // Set loading to true when submitting
-
-    // Sending form data to your email
-    emailjs
-      .sendForm('service_6dvsl0j', 'template_0jrir8o', form.current, {
-        publicKey: 'hG81Z2hZVZtSYO52G',
-      })
-      .then(
-        () => {
-          // Send auto-reply email to the user
-          emailjs
-            .sendForm('service_6dvsl0j', 'template_sugbc6b', form.current, {
-              publicKey: 'hG81Z2hZVZtSYO52G',
-            })
-            .then(
-                () => {
-                  setIsLoading(false);
-                  showToast('Message sent successfully! You will receive an auto-reply shortly.', 'success');
-                  setFormData({ name: '', email: '', message: '' });
-                },
-              (error) => {
-                setIsLoading(false); // Hide loading spinner
-                console.log('Auto-reply failed...', error.text);
-              }
-            );
+  
+    try {
+      const response = await fetch(`${host}/send-email`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        (error) => {
-          setIsLoading(false); // Hide loading spinner
-          console.log('Message failed...', error.text);
-        }
-      );
+        body: JSON.stringify({
+          subject: `Message from ${formData.name} at Sentiment Sense Contact`,
+          email: formData.email,
+          body: formData.message,
+        }),
+      });
+  
+      // Check if status is 429 (Too Many Requests)
+      if (response.status === 429) {
+        console.log("Rate limit exceeded. Showing toast.");
+        showToast("Too Many requests for today", "warning");
+        setIsLoading(false); // Hide loading spinner
+        return; // Prevent further execution
+      }
+  
+      if (!response.ok) {
+        throw new Error('Failed to send email');
+      }
+  
+      setIsLoading(false); // Hide loading spinner
+      showToast('Message sent successfully! You will receive an auto-reply shortly.', 'success');
+      setFormData({ name: '', email: '', message: '' }); // Reset form
+    } catch (error) {
+      setIsLoading(false); // Hide loading spinner
+      showToast('Something went wrong. Please try again later.', 'error');
+      console.error('Message failed...', error);
+    }
   };
+  
 
   return (
     <section className="contact-container">
@@ -113,9 +119,7 @@ const Contact = () => {
         </form>
       </div>
 
-      {isLoading && (
-        <Loading/>
-      )}
+      {isLoading && <Loading />}
 
       <div className="contact-info">
         <h3>Contact Information</h3>
@@ -123,9 +127,6 @@ const Contact = () => {
           <li>
             <strong>Email:</strong> sensesentiment@gmail.com
           </li>
-          {/* <li>
-            <strong>Phone:</strong> +123 456 7890
-          </li> */}
         </ul>
       </div>
     </section>

@@ -27,6 +27,9 @@ const Privacy = lazy(() => import ('./pages/PrivacyPolicy'));
 const Terms = lazy(() => import ('./pages/TermsOfUse'));
 
 
+
+
+
 // Error Boundary Component
 class ErrorBoundary extends React.Component {
   constructor(props) {

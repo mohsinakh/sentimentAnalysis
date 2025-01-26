@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faUser, faInfoCircle, faEnvelope, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faUser, faInfoCircle, faEnvelope, faQuestionCircle, faBlog } from '@fortawesome/free-solid-svg-icons';
 import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext'; // Importing the toast context
 import "./css/Navbar.css";
@@ -120,7 +120,7 @@ function Navbar() {
                 className={`nav-link ${activePath === "/blog" ? "active" : ""}`}
                 onClick={() => handleNavClick("/blog")}
               >
-                <FontAwesomeIcon icon={faInfoCircle} /> Blog
+                <FontAwesomeIcon icon={faBlog} /> Blog
               </Link>
             </li>
             <li>
@@ -222,7 +222,7 @@ function Navbar() {
                 className={`nav-link ${activePath === "/blog" ? "active" : ""}`}
                 onClick={() => handleNavClick("/blog")}
               >
-                <FontAwesomeIcon icon={faInfoCircle} /> Blog
+                <FontAwesomeIcon icon={faBlog} /> Blog
               </Link>
             </li>
             <li>

@@ -20,7 +20,7 @@ const RedditAnalysis = () => {
   const [showChart, setShowChart] = useState(false);
   const location = useLocation();
 
-  const { token, logout } = useContext(AuthContext);
+  const { token, logout,host } = useContext(AuthContext);
 
   // Fetch comments data from the API
   const fetchComments = async (urlToAnalyze) => {
@@ -34,7 +34,7 @@ const RedditAnalysis = () => {
     setError(null);
 
     try {
-      const response = await fetch('https://sentiment-analysis-api-eight.vercel.app/fetch-reddit-comments', {
+      const response = await fetch(`${host}/fetch-reddit-comments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

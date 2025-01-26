@@ -1,4 +1,4 @@
-import React, { useState, useContext,useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import "./css/Login.css";
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
@@ -6,9 +6,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Loading from './Loading'; // Import the Loading component
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useToast } from '../context/ToastContext'; // Importing the toast context
+import { useGoogleLogin } from '@react-oauth/google'; // Updated import
+import googleimg from '../img/google.png'
 
 const Login = () => {
-  const { login } = useContext(AuthContext); // Access login function from context
+  const { login,host } = useContext(AuthContext); // Access login function from context
   const [formData, setFormData] = useState({ credential: '', password: '' });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false); // Loading state
@@ -17,17 +19,101 @@ const Login = () => {
   const { showToast } = useToast(); // Using the toast context
 
 
-    // Automatically fill in the form with user data from localStorage
-    useEffect(() => {
-      const savedUser = localStorage.getItem('user');
-      if (savedUser) {
-        const { email, username,password } = JSON.parse(savedUser);
-        setFormData({ credential: email || username, password: password });
+
+  
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (codeResponse) => {
+      try {
+        console.log("Google Login Data:", codeResponse); // Log Google data to console
+        console.log(host)
+        // Send token to the backend
+        const response = await fetch(`${host}/google-login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ token: codeResponse.access_token }),
+        });
+  
+        const data = await response.json(); 
+        const { access_token, user_info, message } = data;
+  
+        console.log("JWT Token:", access_token);
+        console.log("User Info:", user_info);
+  
+        if (response.ok) {
+          // Use login function from context to store token
+          login(access_token);
+  
+          // Save user info in localStorage
+          localStorage.setItem("user", JSON.stringify(user_info));
+  
+          // Show success toast
+          showToast(`${message} Redirecting to profile...`, "success");
+  
+          // Redirect to profile or another page
+          navigate("/profile");
+        } else if (response.status === 401) {
+          // If user not found, trigger signup
+          showToast("Google User does not exist. Signing up now...", "warning");
+  
+          // Trigger signup request directly from here (as you're already in the login flow)
+          const signupResponse = await fetch(`${host}/google-signup`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ token: codeResponse.access_token }),
+          });
+  
+          const signupData = await signupResponse.json();
+          if (signupResponse.ok) {
+            // Use login function from context to store token
+            login(signupData.access_token);
+  
+            // Save user info in localStorage
+            localStorage.setItem("user", JSON.stringify(signupData.user_info));
+  
+            // Show success toast
+            showToast('Signup successful', 'success');
+            navigate('/profile');
+          } else {
+            // Clear localStorage if signup failed
+            localStorage.removeItem("user");
+  
+            showToast(signupData.detail || 'Signup failed', 'error');
+          }
+        } else {
+          // Handle other status codes or failures
+          showToast(message || 'Authentication failed', 'error');
+        }
+  
+      } catch (error) {
+        console.error("Google login failed:", error);
+        showToast("Google login failed. Please try again.", "error");
       }
-    }, []);
+    },
+    onError: (error) => {
+      console.error("Google Login Failed:", error);
+      showToast("Google login failed. Please try again.", "error");
+    },
+  });
+
+  
 
 
-
+  useEffect(() => {
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      const { email, username, password } = JSON.parse(savedUser);
+      // If there's no password (from Google login), generate a default or random password
+      if (!password) {
+        setFormData({ credential: email || username, password: 'default_google_password' }); // You can change 'randomPasswordSet' with something else if needed
+      } else {
+        setFormData({ credential: email || username, password });
+      }
+    }
+  }, []);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -38,7 +124,7 @@ const Login = () => {
     setIsLoading(true); // Show loading spinner
 
     try {
-      const response = await fetch('https://sentiment-analysis-api-eight.vercel.app/token', {
+      const response = await fetch(`${host}/token`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -71,6 +157,10 @@ const Login = () => {
       setIsLoading(false); // Hide loading spinner
     }
   };
+
+  
+
+  
 
   return (
     <div className="login-container">
@@ -110,7 +200,17 @@ const Login = () => {
           {error && <p className="error-message">{error}</p>}
           <button className='btn' type="submit">Login</button>
         </form>
+        
       )}
+
+      <div className='google-btn-container'>
+          <button className="button-google" onClick={googleLogin}>
+              <img src={googleimg} alt="Google Icon" className="google-icon" />
+              Login with Google
+          </button>
+      </div>
+
+      
       <p>
         Don't have an account?{' '}
         <span className="signup-link" onClick={() => navigate('/signup')}>

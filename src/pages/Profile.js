@@ -9,7 +9,7 @@ import { useToast } from '../context/ToastContext'; // Importing toast context
 import Loading from './Loading'; // Import the Loading component
 
 const Profile = () => {
-  const { token } = useContext(AuthContext);
+  const { token,host } = useContext(AuthContext);
   const [user, setUser] = useState(null);
   const [history, setHistory] = useState([]);
   const [loadingHistory, setLoadingHistory] = useState(true); // State for tracking loading status of history
@@ -18,8 +18,9 @@ const Profile = () => {
   
 
   const fetchHistory = useCallback(async (username) => {
+    if(token){
     try {
-      const response = await fetch('https://sentiment-analysis-api-eight.vercel.app/analysis-history', {
+      const response = await fetch(`${host}/analysis-history`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -41,6 +42,7 @@ const Profile = () => {
       setLoadingHistory(false); // Ensure loading is stopped even in case of error
       showToast('An error occurred while loading the history.', 'error');
     }
+  }
     // eslint-disable-next-line
   }, [token ]);
 
@@ -71,13 +73,13 @@ const Profile = () => {
     showToast('Re-analyzing Reddit post...', 'info');
     navigate('/reddit-analysis', { state:  { postId:`https://reddit/comments/${item.analysis_data.post_id}` } });
   };
-
+ 
   return (
     <div className="profile-page">
       <h2 className="profile-header">Profile Page</h2>
       {user ? (
         <div className="profile-details">
-          <p><FontAwesomeIcon icon={faUser} /><strong> Username:</strong> {user.username}</p>
+          <p><FontAwesomeIcon icon={faUser} /><strong> Username:</strong> {user.username }</p>
           <p><FontAwesomeIcon icon={faEnvelope} /><strong> Email:</strong> {user.email}</p>
 
           <div className="history-section">

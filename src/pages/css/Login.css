@@ -125,7 +125,34 @@ input:focus {
     outline: none;
 }
 
+.google-btn-container{
+    margin:10px 0px;
+}
 
+.button-google {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border: 1px solid #dcdcdc;
+    border-radius: 24px;
+    background-color: white;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #000;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease;
+  }
+  
+  .button-google img {
+    height: 20px;
+    margin-right: 8px;
+  }
+  
+  .button-google:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  
 
 
 /* Sign-Up Button */
