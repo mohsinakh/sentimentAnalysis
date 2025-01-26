@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunksentiment_analysis=self.webpackChunksentiment_analysis||[]).push([[49],{8049:(e,s,r)=>{r.r(s),r.d(s,{default:()=>i});r(2483);var n=r(6723);const i=function(){return(0,n.jsx)("div",{children:(0,n.jsxs)("footer",{children:[(0,n.jsx)("p",{children:"\xa9\ufe0f 2025 Sentiment Sense. All rights reserved."}),(0,n.jsxs)("p",{children:[(0,n.jsx)("a",{href:"/privacy",children:"Privacy Policy"})," |"," ",(0,n.jsx)("a",{href:"/terms",children:"Terms of Service"})]})]})})}}}]);
+//# sourceMappingURL=49.32ea76db.chunk.js.map
