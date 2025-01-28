@@ -35,13 +35,11 @@ const Login = () => {
           body: JSON.stringify({ token: codeResponse.access_token }),
         });
   
-        const data = await response.json(); 
-        const { access_token, user_info, message } = data;
-  
-        console.log("JWT Token:", access_token);
-        console.log("User Info:", user_info);
-  
+
         if (response.ok) {
+          const data = await response.json(); 
+        
+        const { access_token, user_info } = data;
           // Use login function from context to store token
           login(access_token);
   
@@ -49,43 +47,20 @@ const Login = () => {
           localStorage.setItem("user", JSON.stringify(user_info));
   
           // Show success toast
-          showToast(`${message} Redirecting to profile...`, "success");
+          showToast(` Redirecting to profile...`, "success");
   
           // Redirect to profile or another page
           navigate("/profile");
         } else if (response.status === 401) {
           // If user not found, trigger signup
           showToast("Google User does not exist. Signing up now...", "warning");
+
+
+          navigate('/google-signup', { state: { codeResponse: codeResponse } });
   
-          // Trigger signup request directly from here (as you're already in the login flow)
-          const signupResponse = await fetch(`${host}/google-signup`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ token: codeResponse.access_token }),
-          });
-  
-          const signupData = await signupResponse.json();
-          if (signupResponse.ok) {
-            // Use login function from context to store token
-            login(signupData.access_token);
-  
-            // Save user info in localStorage
-            localStorage.setItem("user", JSON.stringify(signupData.user_info));
-  
-            // Show success toast
-            showToast('Signup successful', 'success');
-            navigate('/profile');
-          } else {
-            // Clear localStorage if signup failed
-            localStorage.removeItem("user");
-  
-            showToast(signupData.detail || 'Signup failed', 'error');
-          }
         } else {
           // Handle other status codes or failures
-          showToast(message || 'Authentication failed', 'error');
+          showToast( 'Authentication failed', 'error');
         }
   
       } catch (error) {
