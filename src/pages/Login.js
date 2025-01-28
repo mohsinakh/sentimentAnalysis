@@ -24,9 +24,10 @@ const Login = () => {
   const googleLogin = useGoogleLogin({
     onSuccess: async (codeResponse) => {
       try {
-        console.log("Google Login Data:", codeResponse); // Log Google data to console
-        console.log(host)
+        // console.log("Google Login Data:", codeResponse); // Log Google data to console
+        // console.log(host)
         // Send token to the backend
+        setIsLoading(true)
         const response = await fetch(`${host}/google-login`, {
           method: "POST",
           headers: {
@@ -46,6 +47,7 @@ const Login = () => {
           // Save user info in localStorage
           localStorage.setItem("user", JSON.stringify(user_info));
   
+          setIsLoading(false)
           // Show success toast
           showToast(` Redirecting to profile...`, "success");
   
@@ -55,11 +57,12 @@ const Login = () => {
           // If user not found, trigger signup
           showToast("Google User does not exist. Signing up now...", "warning");
 
-
+          setIsLoading(false)
           navigate('/google-signup', { state: { codeResponse: codeResponse } });
   
         } else {
           // Handle other status codes or failures
+          setIsLoading(false)
           showToast( 'Authentication failed', 'error');
         }
   
