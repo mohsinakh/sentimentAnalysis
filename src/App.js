@@ -16,6 +16,7 @@ const RedditAnalysis = lazy(() => import('./pages/RedditAnalysis'));
 const Profile = lazy(() => import('./pages/Profile'));
 const Login = lazy(() => import('./pages/Login'));
 const Signup = lazy(() => import('./pages/Signup'));
+const GoogleSignup = lazy(() => import('./pages/GoogleSignup'));
 const LogoutPage = lazy(() => import('./pages/LogoutPage'));
 const AboutUs = lazy(() => import('./pages/About'));
 const Blog = lazy(()=> import('./pages/Blog'));
@@ -74,6 +75,7 @@ const App = () => {
                 />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/google-signup" element={<GoogleSignup />} />
               <Route path="/logout" element={<LogoutPage />} />
               <Route path="/about" element={<AboutUs />} />
               <Route path="/docs" element={<Docs />} />

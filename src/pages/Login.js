@@ -99,7 +99,7 @@ const Login = () => {
     },
   });
 
-  
+
 
 
   useEffect(() => {
@@ -110,7 +110,7 @@ const Login = () => {
       if (!password) {
         setFormData({ credential: email || username, password: 'default_google_password' }); // You can change 'randomPasswordSet' with something else if needed
       } else {
-        setFormData({ credential: email || username, password });
+        setFormData({ credential: email || username, password:"" });
       }
     }
   }, []);
@@ -122,6 +122,8 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true); // Show loading spinner
+
+
 
     try {
       const response = await fetch(`${host}/token`, {

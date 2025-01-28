@@ -1,5 +1,5 @@
-import React, { useState,useContext,useEffect } from 'react';
-import { useNavigate,useLocation } from 'react-router-dom';
+import React, { useState,useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './css/Signup.css';
 import Loading from './Loading'; // Import the Loading component
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -22,16 +22,15 @@ const Signup = () => {
   const [emailError, setEmailError] = useState('');
   const navigate = useNavigate();
   const { showToast } = useToast(); // Using the toast context
-  const { login,host } = useContext(AuthContext); 
-  const location = useLocation();
-  const { codeResponse } = location.state || {};  // Getting the token passed from login
-
+  const {host } = useContext(AuthContext); 
 
   // Password validation regex
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
   
   // Email validation regex for Gmail
   const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+  const usernameRegex = /^[a-z0-9]+$/; // No uppercase, no whitespace
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -75,6 +74,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+
     // Validate fields
     if (!formData.username || !formData.email || !formData.password || !formData.confirmPassword) {
       setError('All fields are required.');
@@ -86,7 +86,15 @@ const Signup = () => {
       return;
     }
 
+    // Validate username and password using regex
+    if (!usernameRegex.test(formData.username)) {
+      showToast('Username cannot contain uppercase letters or whitespace.', 'error');
+      return;
+    }
     setIsLoading(true); // Show loading spinner before making requests
+
+
+
 
     try {
       // First, check if the username or email already exists
@@ -140,61 +148,18 @@ const Signup = () => {
   };
 
 
-  const handleGoogleSignup = async (tokenResponse) => {
-    try {
-      const googleSignupData = {
-        token: tokenResponse.access_token,
-      };
-
-      const response = await fetch(`${host}/google-signup`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(googleSignupData),
-      });
-
-      const data = await response.json();
-
-      // Check for a 404 error (user not found)
-      if (response.status === 500) {
-        showToast("Google User already exist. Redirecting to Login page...", "warning");
-        navigate("/login"); // Redirect to signup page
-        return;
-      }
-
-
-
-      if (response.ok) {
-        // Store the JWT token in localStorage (or sessionStorage)
-        login(data.access_token)
-        localStorage.setItem("user", data.user_info);
-        showToast(data.message, 'success');
-        navigate('/profile');  // Or navigate to any authenticated page
-      } else {
-        showToast(data.detail || 'Google signup failed', 'error');
-      }
-    } catch (error) {
-      console.error('Google signup failed:', error);
-      showToast('Failed to sign up with Google', 'error');
-    }
-  };
-
+  
   const googleLogin = useGoogleLogin({
-    onSuccess: handleGoogleSignup,
+    onSuccess: (tokenResponse) => {
+      // Navigate to the GoogleSignup page with the token
+      navigate('/google-signup', { state: { codeResponse: tokenResponse } });
+    },
     onError: (error) => {
       console.error('Google Login Failed:', error);
       showToast('Google login failed. Please try again.', 'error');
     },
   });
 
-
-  useEffect(() => {
-    if (codeResponse) {
-      handleGoogleSignup(codeResponse);  // Automatically trigger signup
-    }
-    // eslint-disable-next-line
-  }, [codeResponse]);
 
   return (
     <div className="signup-container">
@@ -271,7 +236,7 @@ const Signup = () => {
             <div className='google-btn-container'>
           <button className="button-google" onClick={googleLogin}>
               <img src={googleimg} alt="Google Icon" className="google-icon" />
-              Login with Google
+              Signup with Google
           </button>
       </div>
       <p>
