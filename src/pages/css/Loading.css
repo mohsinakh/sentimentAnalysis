@@ -19,14 +19,14 @@
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
   }
 
-  /* Animation Container */
+  /* Animation Container
   .animation-container {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 30px;
     position: relative;
-  }
+  } */
   
   .loading-spinner {
     border: 4px solid #f3f3f3;
@@ -82,7 +82,7 @@
 
 
   /* Animations */
-  @keyframes punch-left {
+  /* @keyframes punch-left {
     0%, 50% {
       transform: rotate(0deg);
     }
@@ -126,4 +126,4 @@
       transform: translateX(-8px);
     }
   }
-  
+   */

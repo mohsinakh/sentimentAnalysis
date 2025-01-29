@@ -98,7 +98,7 @@ const Signup = () => {
 
     try {
       // First, check if the username or email already exists
-      const checkResponse = await fetch(`${host}/check-user`, {
+      const checkResponse = await fetch(`${host}/auth/check-user`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -114,7 +114,7 @@ const Signup = () => {
       }
 
       // Send a POST request to the backend to register the user
-      const response = await fetch(`${host}/register`, {
+      const response = await fetch(`${host}/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -151,6 +151,7 @@ const Signup = () => {
   
   const googleLogin = useGoogleLogin({
     onSuccess: (tokenResponse) => {
+      
       // Navigate to the GoogleSignup page with the token
       navigate('/google-signup', { state: { codeResponse: tokenResponse } });
     },

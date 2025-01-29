@@ -23,12 +23,13 @@ const Login = () => {
   
   const googleLogin = useGoogleLogin({
     onSuccess: async (codeResponse) => {
+      console.log(codeResponse)
       try {
         // console.log("Google Login Data:", codeResponse); // Log Google data to console
         // console.log(host)
         // Send token to the backend
         setIsLoading(true)
-        const response = await fetch(`${host}/google-login`, {
+        const response = await fetch(`${host}/auth/google-login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -50,7 +51,7 @@ const Login = () => {
           setIsLoading(false)
           // Show success toast
           showToast(` Redirecting to profile...`, "success");
-  
+          console.log(access_token)
           // Redirect to profile or another page
           navigate("/profile");
         } else if (response.status === 401) {
@@ -86,7 +87,7 @@ const Login = () => {
       const { email, username, password } = JSON.parse(savedUser);
       // If there's no password (from Google login), generate a default or random password
       if (!password) {
-        setFormData({ credential: email || username, password: 'default_google_password' }); // You can change 'randomPasswordSet' with something else if needed
+        setFormData({ credential: email || username, password: '' }); // You can change 'randomPasswordSet' with something else if needed
       } else {
         setFormData({ credential: email || username, password:"" });
       }
@@ -104,7 +105,7 @@ const Login = () => {
 
 
     try {
-      const response = await fetch(`${host}/token`, {
+      const response = await fetch(`${host}/auth/token`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -176,6 +177,9 @@ const Login = () => {
                 {showPassword ? <FontAwesomeIcon icon={faEyeSlash} /> : <FontAwesomeIcon icon={faEye} />} {/* Show eye icon depending on the state */}
               </span>
             </div>
+            <p className="forgot-password-link" onClick={() => navigate('/forgot-password')}>
+                Forgot Password?
+              </p>
           </div>
           {error && <p className="error-message">{error}</p>}
           <button className='btn' type="submit">Login</button>

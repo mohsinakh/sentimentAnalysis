@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import faqs from "../faqs.json"; // Importing faqs.json directly
+import faqs from "../data/faqs.json"; // Importing faqs.json directly
 import "./css/Faq.css"; // Custom CSS for the FAQ page
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";

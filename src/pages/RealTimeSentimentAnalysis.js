@@ -25,13 +25,13 @@ function RealTimeSentimentAnalysis() {
     setSentiment("");
 
     try {
-      const response = await fetch(`${host}/analyze-sentiment`, {
+      const response = await fetch(`${host}/sentiment/analyze-sentiment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`, // Include the token in the Authorization header
         },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ text:text }),
       });
 
       if(response.status === 401){

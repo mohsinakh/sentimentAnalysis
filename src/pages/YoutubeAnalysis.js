@@ -8,20 +8,21 @@ import { Chart, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend }
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-// Register necessary components for your chart
 Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 function YoutubeAnalysis() {
   const [url, setUrl] = useState("");
   const [videoId, setVideoId] = useState(null);
   const [comments, setComments] = useState([]);
+  const [allComments, setAllComments] = useState([]); // Store all comments initially
   const [error, setError] = useState("");
   const [positiveCount, setPositiveCount] = useState(0);
   const [neutralCount, setNeutralCount] = useState(0);
   const [negativeCount, setNegativeCount] = useState(0);
-  const [showChart, setShowChart] = useState(false); // State to toggle chart visibility
+  const [showChart, setShowChart] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { token, logout ,host } = useContext(AuthContext);
+  const { token, logout, host } = useContext(AuthContext);
+  const [maxComments, setMaxComments] = useState(100);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -49,13 +50,13 @@ function YoutubeAnalysis() {
     }
 
     try {
-      const response = await fetch(`${host}/fetch-comments`, {
+      const response = await fetch(`${host}/youtube/fetch-comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`, // Include the JWT token here
+          "Authorization": `Bearer ${token}`,
         },
-        body: JSON.stringify({ url: videoUrl }),
+        body: JSON.stringify({ video_url: videoUrl }),
       });
 
       if (response.status === 401) {
@@ -70,50 +71,61 @@ function YoutubeAnalysis() {
       }
 
       const data = await response.json();
-      setComments(data.comments);
+      setAllComments(data.comments); // Store all comments initially
+      const filteredComments = data.comments.slice(0, maxComments);
+      setComments(filteredComments);
 
-      // Calculate sentiment counts
-      let posCount = 0;
-      let neuCount = 0;
-      let negCount = 0;
-
-      data.comments.forEach((comment) => {
-        if (comment.sentiment === "positive") posCount++;
-        else if (comment.sentiment === "neutral") neuCount++;
-        else if (comment.sentiment === "negative") negCount++;
-      });
-
-      setPositiveCount(posCount);
-      setNeutralCount(neuCount);
-      setNegativeCount(negCount);
+      calculateSentimentCounts(filteredComments); // Calculate sentiment counts for filtered comments
       setLoading(false);
     } catch (error) {
       setError("Error fetching comments. Please check the URL and try again.");
       setLoading(false);
     }
-  }, [token, logout, navigate,host]);
+  }, [token, logout, navigate, host,maxComments]);
+
+  // Calculate sentiment counts
+  const calculateSentimentCounts = (filteredComments) => {
+    let posCount = 0;
+    let neuCount = 0;
+    let negCount = 0;
+
+    filteredComments.forEach((comment) => {
+      if (comment.sentiment === "positive") posCount++;
+      else if (comment.sentiment === "neutral") neuCount++;
+      else if (comment.sentiment === "negative") negCount++;
+    });
+
+    setPositiveCount(posCount);
+    setNeutralCount(neuCount);
+    setNegativeCount(negCount);
+  };
+
+  // Update comments dynamically when maxComments changes
+  useEffect(() => {
+    const filteredComments = allComments.slice(0, maxComments);
+    setComments(filteredComments);
+    calculateSentimentCounts(filteredComments);
+  }, [maxComments, allComments]);
 
   useEffect(() => {
     const state = location.state;
     if (state?.videoUrl) {
-      setUrl(state.videoUrl); // Automatically set the URL from the state
-      fetchComments(state.videoUrl); // Fetch comments immediately
+      setUrl(state.videoUrl);
+      fetchComments(state.videoUrl);
     }
-    // eslint-disable-next-line
-  }, [ location.state]); // Runs whenever the location state changes
+  }, [location.state, fetchComments]);
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      fetchComments(url); // Trigger search when Enter key is pressed
+      fetchComments(url);
     }
   };
 
   const handleFocus = () => {
-    document.getElementById("youtube-url").select(); // Select all text when input is focused
+    document.getElementById("youtube-url").select();
   };
 
-  // Chart Data
   const data = {
     labels: ['Positive', 'Neutral', 'Negative'],
     datasets: [
@@ -140,7 +152,7 @@ function YoutubeAnalysis() {
           onFocus={handleFocus}
           onChange={(e) => setUrl(e.target.value)}
         />
-        <button onClick={() => fetchComments(url)} className='btn'>
+        <button onClick={() => fetchComments(url)} className="btn">
           <FontAwesomeIcon icon={faSearch} />
         </button>
       </div>
@@ -163,6 +175,11 @@ function YoutubeAnalysis() {
 
       {comments.length > 0 && (
         <div className="sentiment-counts">
+          <select value={maxComments} onChange={(e) => setMaxComments(Number(e.target.value))} className='select-dropdown'>
+            <option value={10}>10 Comments</option>
+            <option value={50}>50 Comments</option>
+            <option value={100}>100 Comments</option>
+          </select>
           <h3>Sentiment Breakdown</h3>
           <p><strong>Positive:</strong> {positiveCount}</p>
           <p><strong>Neutral:</strong> {neutralCount}</p>
@@ -198,9 +215,7 @@ function YoutubeAnalysis() {
                   {` ${comment.username || "Anonymous"}`}
                 </h4>
                 <div className={`sentiment-label ${comment.sentiment}`}>
-                  {comment.sentiment === "positive" && "pos"}
-                  {comment.sentiment === "neutral" && "neu"}
-                  {comment.sentiment === "negative" && "neg"}
+                  {comment.sentiment}
                 </div>
                 <p>{comment.text}</p>
               </li>

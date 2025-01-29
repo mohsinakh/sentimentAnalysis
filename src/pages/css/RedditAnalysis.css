@@ -186,19 +186,16 @@
   display: inline-block;
 }
 
-.sentiment-label.pos {
-  background-color: #28a745;
-  color: white;
+.positive {
+  color: #28a745;
 }
 
-.sentiment-label.neu {
-  background-color: #6c757d;
-  color: white;
+.neutral {
+  color: #6c757d;
 }
 
-.sentiment-label.neg {
-  background-color: #dc3545;
-  color: white;
+.negative {
+  color: #dc3545;
 }
 
 .error-message {

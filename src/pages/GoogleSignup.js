@@ -26,7 +26,7 @@ const GoogleSignup = () => {
   // Check if email or username is already registered
   const handleCheckUser = async () => {
     try {
-      const response = await fetch(`${host}/check-user`, {
+      const response = await fetch(`${host}/auth/check-user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -101,7 +101,7 @@ const GoogleSignup = () => {
     }
 
     try {
-      const response = await fetch(`${host}/google-signup`, {
+      const response = await fetch(`${host}/auth/google-signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -146,27 +146,27 @@ const GoogleSignup = () => {
               onChange={(e) => setUsername(e.target.value)}
               required
             />
+            
           </div>
-          <div className="password-container">
-            <input
-              type={showPassword ? "text" : "password"} // Toggle between text and password input type
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <span
-              className="password-toggle-icon"
-              onClick={() => setShowPassword(!showPassword)} // Toggle the password visibility
-            >
-              {showPassword ? (
-                <FontAwesomeIcon icon={faEyeSlash} />
-              ) : (
-                <FontAwesomeIcon icon={faEye} />
-              )}{" "}
-              {/* Show eye icon depending on the state */}
-            </span>
-          </div>
+          <div>
+                      <label>Password:</label>
+                      <div className="password-container">
+                        <input
+                          type={showPassword ? "text" : "password"} // Toggle between text and password input type
+                          name="password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          required
+                        />
+                        <span 
+                          className="password-toggle-icon"
+                          onClick={() => setShowPassword(!showPassword)} // Toggle the password visibility
+                        >
+                          {showPassword ? <FontAwesomeIcon icon={faEyeSlash} /> : <FontAwesomeIcon icon={faEye} />} {/* Show eye icon depending on the state */}
+                        </span>
+                      </div>
+                    </div>
+          
           <button type="submit" className="signup-button">Complete Sign-Up</button>
         </form>
       )}

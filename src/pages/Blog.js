@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./css/Blog.css";
-import blogData from "../blog.json";
+import blogData from "../data/blog.json";
 import { useToast } from '../context/ToastContext'; // Importing the toast context
 
 const Blog = () => {

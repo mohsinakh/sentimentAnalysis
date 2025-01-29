@@ -154,6 +154,18 @@ input:focus {
   }
   
 
+  .forgot-password-link {
+    color: #007bff;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  .forgot-password-link:hover {
+    text-decoration: underline;
+  }
+  
+
 
 /* Sign-Up Button */
 .signup-link {

@@ -29,7 +29,7 @@ const Contact = () => {
     setIsLoading(true); // Set loading to true when submitting
   
     try {
-      const response = await fetch(`${host}/send-email`, {
+      const response = await fetch(`${host}/email/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -98,7 +98,6 @@ const Contact = () => {
               required
             />
           </div>
-
           <div className="input-group">
             <label htmlFor="message">Your Message</label>
             <textarea
@@ -108,8 +107,9 @@ const Contact = () => {
               onChange={handleChange}
               placeholder="How can we help?"
               required
-            ></textarea>
+              ></textarea>
           </div>
+              {isLoading && <Loading />}
 
           <div className="form-footer">
             <button type="submit" className="submit-btn" disabled={isLoading}>
@@ -119,7 +119,7 @@ const Contact = () => {
         </form>
       </div>
 
-      {isLoading && <Loading />}
+      
 
       <div className="contact-info">
         <h3>Contact Information</h3>

@@ -26,7 +26,8 @@ const NotFound = lazy(() => import ('./pages/NotFound'));
 const Docs = lazy(() => import ('./pages/Docs'));
 const Privacy = lazy(() => import ('./pages/PrivacyPolicy'));
 const Terms = lazy(() => import ('./pages/TermsOfUse'));
-
+const ResetPassword = lazy(() => import ('./pages/ResetPassword'))
+const ForgotPassword = lazy(() => import ('./pages/ForgotPassword'))
 
 
 
@@ -77,6 +78,8 @@ const App = () => {
               <Route path="/signup" element={<Signup />} />
               <Route path="/google-signup" element={<GoogleSignup />} />
               <Route path="/logout" element={<LogoutPage />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/about" element={<AboutUs />} />
               <Route path="/docs" element={<Docs />} />
               <Route path="/blog" element={<Blog />} />

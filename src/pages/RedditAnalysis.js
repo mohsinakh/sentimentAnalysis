@@ -34,13 +34,13 @@ const RedditAnalysis = () => {
     setError(null);
 
     try {
-      const response = await fetch(`${host}/fetch-reddit-comments`, {
+      const response = await fetch(`${host}/reddit/fetch-comments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ url: urlToAnalyze })
+        body: JSON.stringify({ post_url: urlToAnalyze })
       });
 
       if (response.status === 401) {
